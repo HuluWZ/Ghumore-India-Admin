@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { useTheme } from '@mui/material'
 import MainCard from '../../components/MainCard'
-
+import { useProduct } from '../../hooks/useProduct'
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? "#363221" : "#f7f6f2",
@@ -38,7 +38,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 
 const Report = () => {
-    // const { data, isLoading, isError } = useOrg()
+    const { data, isLoading, isError } = useProduct()
     const theme = useTheme()
 
     if (isLoading) return (

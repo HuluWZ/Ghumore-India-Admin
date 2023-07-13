@@ -18,6 +18,8 @@ const Products = () => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { id }: any = useParams();
 
+
+     console.log(" ID ",id," Product  ",products , " Is Loading ",isLoading , " Product ",product);
     if (isLoading) return (
         <PageView
             title="Users"

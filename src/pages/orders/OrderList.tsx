@@ -31,10 +31,6 @@ import { HourglassBottomRounded } from "@mui/icons-material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import TeleLogo from '../../assets/images/tele.jpg';
-import MoneyLogo from '../../assets/images/money-sack.png';
-import CheckLogo from '../../assets/images/cash.png';
-import TransferLogo from '../../assets/images/transfer.png';
 
 const ITEM_HEIGHT = 48;
 
@@ -59,199 +55,47 @@ const OrdersView = ({
   };
 
   const columns: GridColDef[] = [
+    
     {
-      field: "fullName",
-      headerName: "Customer",
-      minWidth: 200,
-      renderCell: (params: any) => {
-        const { row } = params;
-        const { fullName, phoneNumber } = row;
-        return (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Avatar
-                sx={{
-                  width: "40px",
-                  height: "40px",
-                  marginRight: "10px",
-                  backgroundColor: theme.palette.primary.main,
-                  fontSize: "0.8rem",
-                  borderRadius: "20%",
-                }}
-              >
-                {fullName.charAt(0).toUpperCase() +
-                  fullName.charAt(fullName.indexOf(" ") + 1).toUpperCase()}
-              </Avatar>
-            </Box>
-            <Box
-              sx={{
-                display: "block",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="body1"
-                sx={{
-                  display: "flex", alignItems: "center",
-                  marginBottom: "5px",
-                }}
-              >
-                {fullName}
-              </Typography>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ display: "flex", alignItems: "center", }}
-              >
-                <LocalPhoneOutlinedIcon
-                  fontSize="small"
-                  sx={{ marginRight: "5px" }}
-                />
-                {phoneNumber}
-              </Typography>
-            </Box>
-          </>
-        );
-      },
-    },
-    {
-      field: "address",
-      headerName: "Address",
+      field: "activity",
+      headerName: "Activity",
       minWidth: 150,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "name",
+      headerName: "Name",
+      minWidth: 150
+    },
+    {
+      field: "unitPrice",
+      headerName: "Unit Price",
+      minWidth: 150
+    },
+    {
+      field: "time",
+      headerName: "Time",
+      minWidth: 150
+    },
+    {
+      field: "quantity",
+      headerName: "Quantity",
       minWidth: 150,
     },
     {
-      field: "paymentMethod",
-      headerName: "Payment Method",
-      minWidth: 100,
-      renderCell: (params: any) => {
-        const { row } = params;
-        const { paymentMethod } = row;
-        return (
-          <>
-            {paymentMethod === "Cash" ? (
-              <img
-                src={MoneyLogo}
-                alt="cash"
-                style={{ width: "30px", height: "30px" }}
-              />
-            ) : paymentMethod === "Credit" ? (
-              <img
-                src="https://img.icons8.com/color/48/000000/visa.png"
-                alt="card"
-                style={{ width: "30px", height: "30px" }}
-              />
-            ) : paymentMethod === "Transfer" ? (
-              <img
-                src={TransferLogo}
-                alt="transfer"
-                style={{ width: "30px", height: "30px" }}
-              />
-            ) : paymentMethod === "TeleBirr" ? (
-              <img
-                src={TeleLogo}
-                alt="telebirr"
-                style={{ width: "30px", height: "30px" }}
-              />
-            ) : paymentMethod === "Check" ? (
-              <img
-                src={CheckLogo}
-                alt="check"
-                style={{ width: "30px", height: "30px" }}
-              />
-            ) : (
-              <img
-                src="https://img.icons8.com/color/48/000000/cash-in-hand.png"
-                alt="other"
-                style={{ width: "30px", height: "30px" }}
-              />
-            )}
-          </>
-        );
-      },
+      field: "totalPrice",
+      headerName: "Total Price",
+      minWidth: 150,
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      minWidth: 150,
     },
     {
       field: "status",
       headerName: "Status",
-      minWidth: 120,
-      renderCell: (params: any) => {
-        const { row } = params;
-        const { status } = row;
-        return (
-            <CssVarsProvider>
-              {status === "Pending" ? (
-                <Chip
-                  variant="soft"
-                  size="sm"
-                  startDecorator={<HourglassBottomRounded />}
-                  color="neutral"
-                >
-                  {status}
-                </Chip>
-              ) : status === "Approved" ? (
-                <Chip
-                  variant="soft"
-                  size="sm"
-                  color="success"
-                  startDecorator={<CheckCircleOutlineIcon />}
-                >
-                  {status}
-                </Chip>
-              ) : (
-                <Chip
-                  variant="soft"
-                  size="sm"
-                  color="danger"
-                  startDecorator={<HourglassBottomRounded />}
-                >
-                  {status}
-                </Chip>
-              )}
-            </CssVarsProvider>
-        );
-      },
+      minWidth: 120
     },
-    {
-      field: "orderDate",
-      headerName: "Order Date",
-      minWidth: 100,
-      renderCell: (params: any) => {
-        const { row } = params;
-        const { orderDate } = row;
-        return (
-          <Typography variant="body2" color="text.secondary">
-            {moment(orderDate).fromNow()}
-          </Typography>
-        );
-      },
-    },
-    {
-      field: "description",
-      headerName: "description",
-      minWidth: 150,
-      renderCell: (params: any) => {
-        const { row } = params;
-        const { description } = row;
-        return (
-          <Typography variant="body2" color="text.secondary">
-            {description.substring(0, 20) + "..."}
-          </Typography>
-        );
-      },
-    },
-
     {
       field: "actions",
       headerName: "Actions",
@@ -323,19 +167,17 @@ const OrdersView = ({
     },
   ];
 
-  const rows: GridRowsProp = orders?.Orders?.map((item: any) => {
+  const rows: GridRowsProp = orders?.booking?.map((item: any) => {
     return {
       id: item._id,
-      fullName: item.fullName,
-      phoneNumber: item.phoneNumber,
-      address: item.address,
+      name: item.option?.name,
+      unitPrice: item.option?.unitPrice,
+      time: item.option?.time,
       email: item.email,
-      paymentMethod: item.paymentMethod,
+      quantity: item.quantity,
+      date: item.date,
       status: item.status,
-      orderDate: item.orderDate,
-      description: item.description,
-      city: item.city,
-      items: item.items,
+      totalPrice: item.totalPrice
     };
   });
 

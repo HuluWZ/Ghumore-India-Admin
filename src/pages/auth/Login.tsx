@@ -52,6 +52,7 @@ const Login = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={async (values, { setSubmitting, resetForm }) => {
+                            // console.log(values);
                             try {
                                 await loginAction(values);
                                 resetForm();
@@ -126,9 +127,9 @@ const Login = () => {
                                         </Link>
                                     </Grid>
                                     <Grid item>
-                                        <Link to="/auth/register" >
+                                        {/* <Link to="/auth/register" >
                                             {"Don't have an account? Sign Up"}
-                                        </Link>
+                                        </Link> */}
                                     </Grid>
                                 </Grid>
                             </form>

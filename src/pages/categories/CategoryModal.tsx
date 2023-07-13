@@ -11,6 +11,7 @@ import { ButtonGroup, Button } from "@mui/material";
 import { ThreeDots } from "react-loader-spinner";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Input } from '@material-ui/core';
 
 
 const durationTypeList = ["days","hours","months","years"]
@@ -74,17 +75,25 @@ const FormDialog = ({
         duration: Yup.string().required("Required"),
         location: Yup.string().required("Required"),
         organizer:Yup.string().required("Required"),
-        images: Yup.mixed().required("Required"),
+        // images: Yup.mixed().required("Required"),
     });
  
 
     const [options, setOptions] = useState<Option[]>([{ name: '', description: '', unitPrice: '', time: [''] }]);
     const [content, setContent] = useState('');
     const [durationType, setDurationType] = useState('');
+    const [images, setImages] = useState([]);
 
   const handleDurationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDurationType(event.target.value);
-  }
+    }
+    const handleUploadImages = (event:React.ChangeEvent<HTMLInputElement>) => {
+        const files:any = event.target.files;
+        // console.log(" Current Uploaded ",files)
+        const uploadedImage:any = [...images, files]
+        // console.log(" Total Uploaded Image ",uploadedImage, " Prev ",images)
+        setImages(uploadedImage);
+  };
 
 
     const handleAddOption = () => {
@@ -95,7 +104,7 @@ const FormDialog = ({
 
         const { name, value } = event.target;
         var newOptions:Option[] = [...options];
-        console.log( " Name - ",event.target.name," Value - ",event.target.value);
+        // console.log( " Name - ",event.target.name," Value - ",event.target.value);
         newOptions[index][name] = value;
         setOptions(newOptions);
     }
@@ -123,7 +132,8 @@ const FormDialog = ({
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        // console.log(values, " Form Data");
+                        values.images = images;
+                        // console.log(values, " Form Data "," Images - ",images);
                         if (selectedCategory) {
                             handleEdit(values);
                             setSelectedCategory(null);
@@ -328,25 +338,12 @@ const FormDialog = ({
                                     marginBottom:2
                                 }}
                             />
-                            <TextField
-                                id="images"
-                                label="Image"
-                                type="file"
-                                fullWidth
-                                variant="standard"
-                                onChange={(event: any) => {
-                                    setFieldValue("images", event.currentTarget.files);
-                                }}
-                                InputLabelProps={{ shrink: true }}
-                                onBlur={handleBlur}
-                                // InputProps={{ multiple: true }}
-                                error={Boolean(touched.images && errors.images)}
-                                helperText={touched.images && errors.images}
-                                sx={{
-                                    marginBottom:4
-                                }}
-                              
-                            />
+
+                            <Button variant="contained" component="label">  Upload Images
+                                <Input type="file" style={{ display: 'none' }} onChange={handleUploadImages} multiple required />
+                            </Button>
+                            
+                            <br></br>
                             <DialogActions>
                                 <ButtonGroup>
                                     <Button onClick={handleClose}>

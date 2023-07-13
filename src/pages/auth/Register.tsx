@@ -91,61 +91,28 @@ const Register = () => {
                     </Typography>
                     <Formik
                         initialValues={{
-                            //userData
-                            firstName: "",
-                            lastName: "",
+                            //userDat
+                            fullName: "",
                             email: "",
                             password: "",
-                            phoneNumber: "",
-
-                            //orgData
-                            orgName: "",
-                            orgPhone: "",
-                            orgAddress: "",
-                            orgEmail: "",
-                            tinNumber: "",
+                            phoneNumber: ""
                         }}
                         validationSchema={Yup.object().shape({
-                            firstName: Yup.string().required("First Name is required"),
-                            lastName: Yup.string().required("Last Name is required"),
+                            fullName: Yup.string().required("Full Name is required"),
                             email: Yup.string()
                                 .email("Email is invalid")
                                 .required("Email is required"),
                             password: Yup.string()
                                 .min(6, "Password must be at least 6 characters")
                                 .required("Password is required"),
-                            phoneNumber: Yup.string().required("Phone Number is required"),
-
-                            orgName: Yup.string().required("Organization Name is required"),
-                            orgPhone: Yup.string().required(
-                                "Organization Phone Number is required"
-                            ),
-                            orgAddress: Yup.string().required(
-                                "Organization Address is required"
-                            ),
-                            orgEmail: Yup.string()
-                                .email("Organization Email is invalid")
-                                .required("Organization Email is required"),
-                            tinNumber: Yup.string().required(
-                                "Organization TIN Number is required"
-                            ),
+                            phoneNumber: Yup.string().required("Phone Number is required")
                         })}
                         onSubmit={(values, { resetForm }) => {
                             const signUpData = {
-                                userData: {
-                                    firstName: values.firstName,
-                                    lastName: values.lastName,
+                                    fullName: values.fullName,
                                     email: values.email,
                                     password: values.password,
                                     phoneNumber: values.phoneNumber,
-                                },
-                                orgData: {
-                                    name: values.orgName,
-                                    phoneNumber: values.orgPhone,
-                                    address: values.orgAddress,
-                                    orgEmail: values.orgEmail,
-                                    tinNumber: values.tinNumber,
-                                },
                             };
                             handleSubmit(signUpData);
                             resetForm();
@@ -174,34 +141,20 @@ const Register = () => {
                                                 <Grid item xs={12} sm={6}>
                                                     <TextField
                                                         autoComplete="fname"
-                                                        name="firstName"
+                                                        name="fullName"
                                                         required
                                                         fullWidth
-                                                        id="firstName"
-                                                        label="First Name"
+                                                        id="fullName"
+                                                        label="Full Name"
                                                         autoFocus
-                                                        value={values.firstName}
+                                                        value={values.fullName}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        error={Boolean(touched.firstName && errors.firstName)}
-                                                        helperText={touched.firstName && errors.firstName}
+                                                        error={Boolean(touched.fullName && errors.fullName)}
+                                                        helperText={touched.fullName && errors.fullName}
                                                     />
                                                 </Grid>
-                                                <Grid item xs={12} sm={6} lg={6} xl={6}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        id="lastName"
-                                                        label="Last Name"
-                                                        name="lastName"
-                                                        autoComplete="lastName"
-                                                        value={values.lastName}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(touched.lastName && errors.lastName)}
-                                                        helperText={touched.lastName && errors.lastName}
-                                                    />
-                                                </Grid>
+                                                
                                                 <Grid item xs={6}>
                                                     <TextField
                                                         required
@@ -256,98 +209,6 @@ const Register = () => {
                                         </Box>
                                         <Box flexGrow={1} mb={2} style={{ marginBottom: "auto" }} />
                                         <Divider orientation="vertical" />
-                                        <Box p={2}>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12} sm={12}>
-                                                    <Typography variant="h5" gutterBottom style={{ marginTop: "0px" }}>
-                                                        User account Info.
-                                                    </Typography>
-                                                    <Divider />
-                                                </Grid>
-                                                <Grid item xs={6}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        name="orgName"
-                                                        label="Organization Name"
-                                                        type="text"
-                                                        id="orgName"
-                                                        autoComplete="org-name"
-                                                        value={values.orgName}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(touched.orgName && errors.orgName)}
-                                                        helperText={touched.orgName && errors.orgName}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={6}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        name="orgPhone"
-                                                        label="Organization Phone Number"
-                                                        type="text"
-                                                        id="orgPhone"
-                                                        autoComplete="org-phone"
-                                                        value={values.orgPhone}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(touched.orgPhone && errors.orgPhone)}
-                                                        helperText={touched.orgPhone && errors.orgPhone}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={6}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        name="orgAddress"
-                                                        label="Organization Address"
-                                                        type="text"
-                                                        id="orgAddress"
-                                                        autoComplete="org-address"
-                                                        value={values.orgAddress}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(touched.orgAddress && errors.orgAddress)}
-                                                        helperText={touched.orgAddress && errors.orgAddress}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={6}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        name="orgEmail"
-                                                        label="Organization Email"
-                                                        type="text"
-                                                        id="orgEmail"
-                                                        autoComplete="org-email"
-                                                        value={values.orgEmail}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(touched.orgEmail && errors.orgEmail)}
-                                                        helperText={touched.orgEmail && errors.orgEmail}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <TextField
-                                                        required
-                                                        fullWidth
-                                                        name="tinNumber"
-                                                        label="TIN Number"
-                                                        type="text"
-                                                        id="tinNumber"
-                                                        autoComplete="tin-number"
-                                                        value={values.tinNumber}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(
-                                                            touched.tinNumber && errors.tinNumber
-                                                        )}
-                                                        helperText={touched.tinNumber && errors.tinNumber}
-                                                    />
-                                                </Grid>
-                                            </Grid>
-                                        </Box>
                                     </Box>
                                     <Box sx={{
                                         display: 'flex',

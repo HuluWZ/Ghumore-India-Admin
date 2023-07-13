@@ -6,8 +6,9 @@ const Footer = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center',flexDirection:"column", alignItems: 'center', height: '100px', backgroundColor: '' }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography variant="h5" sx={{ color: '' }}>
-                    {"Powerd by "} <strong>
-                    Prophecius Tech
+                    {"Powered by "} <br></br>
+                    <strong>
+                    My Apps Development
                     </strong>
                 </Typography>
             </div>

@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }: any) => {
         dispatch({ type: 'LOGIN_REQUEST' });
         try {
             const response = await login(data);
+            console.log(" Login Response  D ",response)
             dispatch({ type: 'LOGIN_SUCCESS', payload: response });
             localStorage.setItem('token', response.token);
             // localStorage.setItem('org', response.org);

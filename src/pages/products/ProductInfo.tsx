@@ -26,152 +26,130 @@ const ItemMedia = styled(CardMedia)(({ theme }) => ({
 
 const ProductInfo = ({ product }: any) => {
     const theme = useTheme();
+    // console.log(" Selected ", product);
+    // console.log(" Product Info - ",product.user)
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} md={12}>
-                <Item>
-                    <ItemMedia
-                        image={product && product[0].image}
-                        title={product && product[0].name}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h3" component="div">
-                            {product && product[0].name}
-                        </Typography>
-                        <Typography variant="body2" color={theme.palette.mode === 'dark' ? 'secondary' : 'text.primary'}>
-                            {product && product[0].description}
-                        </Typography>
-                    </CardContent>
-                </Item>
-            </Grid>
+
             <Grid item xs={12} md={12}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={6}>
                         <Item>
                             <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    Product Code:
+                                    ID:
                                 </Box>
                             </Typography>
                             <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'} >
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0]._id.substring(0, 8)}
+                                    {product && product.user._id.substring(0, 8)}
                                 </Box>
                             </Typography>
                         </Item>
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={12}>
                         <Item>
                             <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    Category:
+                                    Full Name:
                                 </Box>
                             </Typography>
                             <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0].category.name}
+                                    {product && product.user.fullName}
                                 </Box>
                             </Typography>
                         </Item>
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={6}>
                         <Item>
                             <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    Price:
+                                    Email:
                                 </Box>
                             </Typography>
                             <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0].buyingPrice}
+                                   <a  href={"mailto:"+product.user?.email}>
+                                    {product && product.user?.email}
+                                    </a> 
                                 </Box>
                             </Typography>
                         </Item>
                     </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Item>
-                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    Quantity:
-                                </Box>
-                            </Typography>
-                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0].initialQuantity}
-                                </Box>
-                            </Typography>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Item>
-                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    Description:
-                                </Box>
-                            </Typography>
-                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0].description}
-                                </Box>
-                            </Typography>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Item>
-                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    Model:
-                                </Box>
-                            </Typography>
-                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    {product && product[0].model}
-                                </Box>
-                            </Typography>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Item>
-                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    Stock Alert:
-                                </Box>
-                            </Typography>
-                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
-                                <Box fontWeight="fontWeightBold" m={1}>
-                                    <CssVarsProvider>
-                                        <Chip
-                                            variant="soft"
-                                            color="success"
-                                            size="sm"
-                                        >
-                                            {product && product[0].stockAlert}
-                                        </Chip>
-                                    </CssVarsProvider>
 
-                                </Box>
-                            </Typography>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={6}>
                         <Item>
                             <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    Category:
+                                    Phone Number:
                                 </Box>
                             </Typography>
                             <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
                                 <Box fontWeight="fontWeightBold" m={1}>
-                                    <CssVarsProvider>
-                                        <Chip
-                                            variant="soft"
-                                            color="info"
-                                            size="sm"
-                                        >
-                                            {product && product[0].category.name}
-                                        </Chip>
-                                    </CssVarsProvider>
+                                    <a  href={"tel:"+product.user?.phoneNumber}>
+                                    {product && product.user?.phoneNumber}
+                                    </a>
+                                </Box>
+                            </Typography>
+                        </Item>
+                    </Grid>
 
+                    <Grid item xs={12} md={6}>
+                        <Item>
+                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    City:
+                                </Box>
+                            </Typography>
+                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    {product && product.user?.city || "-"}
+                                </Box>
+                            </Typography>
+                        </Item>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Item>
+                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    Address:
+                                </Box>
+                            </Typography>
+                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    {product && product.user?.address|| "-"}
+                                </Box>
+                            </Typography>
+                        </Item>
+                    </Grid>
+                    
+
+                    <Grid item xs={12} md={6}>
+                        <Item>
+                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    Role:
+                                </Box>
+                            </Typography>
+                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    {product && product.user.role}
+                                </Box>
+                            </Typography>
+                        </Item>
+                    </Grid>
+                    
+                    <Grid item xs={12} md={6}>
+                        <Item>
+                            <Typography variant="body1" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    Updated At:
+                                </Box>
+                            </Typography>
+                            <Typography variant="body2" color={theme.palette.mode === 'dark' ? '#fff' : 'text.primary'}>
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    {product && product.user?.updatedAt}
                                 </Box>
                             </Typography>
                         </Item>

@@ -36,7 +36,7 @@ export default function MainLayout() {
           <Typography variant="h5" noWrap component="div">
             <span>Ghumore India</span>
           </Typography>
-          <Button color="success" variant="text" style={{ marginLeft: "auto" }}>
+          {/* <Button color="success" variant="text" style={{ marginLeft: "auto" }}>
             <Link component={RouterLink} to="/auth/login" style={{ textDecoration: "none" }}>
               Login
             </Link>
@@ -50,7 +50,7 @@ export default function MainLayout() {
               Register
             </Link>
 
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
       <Box

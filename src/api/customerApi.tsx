@@ -8,13 +8,15 @@ const token = localStorage.getItem("token") || "";
 
 //get all categories
 export const getCustomers = async () => {
+    // console.log(" Get  Data Customer ",`${api}get`)
+
     const response = await axios.get(`${api}get`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log("Customers", response.data)
+    console.log(" Customers ", response.data)
     return response.data;
 }
 
@@ -65,4 +67,44 @@ export const deleteCustomer = async (id: any) => {
     });
 
     return response.data;
+}
+
+
+export const register = async (data: any) => {
+    try {
+        const response = await axios.post(`${api}create`, data, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const login = async (data: any) => {
+    try {
+        console.log(" Login  Data Customer ",`${api}login`,data)
+        const response = await axios.post(`${api}login`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        console.log(" Login Response ",response)
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const logout = async () => {
+    try {
+        const response = await axios.get(`${api}/logout`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }

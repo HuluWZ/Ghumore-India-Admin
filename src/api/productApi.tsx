@@ -16,7 +16,7 @@ export const getProducts = async () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(" Products  ",response.data);
+        console.log(" All Products - ",response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -25,6 +25,7 @@ export const getProducts = async () => {
 
 export const getProduct = async (id: string) => {
     try {
+        console.log(" Get Product -  ",id)
         const response = await axios.get(`${url}/get/${id}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -43,10 +44,11 @@ export const createProduct = async (data: any) => {
     try {
         const response = await axios.post(`${url}/create`, data, {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
+        console.log(" Create Product -  ",response?.data,data)
         return response.data;
     }
     catch (error) {

@@ -12,12 +12,13 @@ export const getCategories = async () => {
             Authorization: `Bearer ${token}`,
         },
     });
+        console.log(" Category  = " , response.data)
 
     return response.data;
 };
 
 export const createCategory = async (data: any) => {
-    console.log(" Activity data = ", data)
+    console.log(" Activity data = "+ data,JSON.parse(JSON.stringify(data)))
     const response = await axios.post(`${url}activity/create`, data, {
         headers: {
             "Content-Type": "multipart/form-data",

@@ -15,6 +15,7 @@ export const register = async (data: any) => {
 
 export const login = async (data: any) => {
     try {
+        console.log(" Login ",data,`${url}/login`)
         const response = await axios.post(`${url}/login`, data);
         console.log(" Login ",response,data)
         return response.data;

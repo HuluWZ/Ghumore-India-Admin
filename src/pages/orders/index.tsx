@@ -16,12 +16,12 @@ const Orders = () => {
 
     if (isLoading) return (
         <PageView
-            title="Orders"
+            title="Booking"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Order",
+                    label: "Add Booking",
                     handler: () => {
                         setOpen(true)
                         setSelectedOrder(null)
@@ -42,12 +42,12 @@ const Orders = () => {
 
     if (isError) return (
         <PageView
-            title="Orders"
+            title="Booking"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Order",
+                    label: "Add Booking",
                     handler: () => {
                         setOpen(true)
                         setSelectedOrder(null)
@@ -68,12 +68,12 @@ const Orders = () => {
 
     return (
         <PageView
-            title="Orders"
+            title="Booking"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Order",
+                    label: "Add Booking",
                     handler: () => {
                         setOpen(true)
                         setSelectedOrder(null)
@@ -115,8 +115,8 @@ const Orders = () => {
                     deleteOrderMutation(selectedOrder.id)
                     setOpenConfirm(false)
                 }}
-                title="Delete Order"
-                description="Are you sure you want to delete this order?"
+                title="Delete Booking"
+                description="Are you sure you want to delete this booking?"
                 confirmText="Delete"
                 cancelText='Cancel'
             />

@@ -13,7 +13,7 @@ export const getOrders = async () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("Orders", response.data);
+        console.log(" Orders ", response.data);
         return response.data;
     } catch (error) { 
         console.log(error);

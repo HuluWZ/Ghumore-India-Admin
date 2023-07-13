@@ -51,8 +51,11 @@ const ProductDetail = () => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        // console.log(" New Value ", newValue," Data - ",data)
         setValue(newValue);
     };
+
+    // console.log(" Value ",value," Data ",data)
 
     if (isLoading) return (
         <PageView title="Loading . . .">
@@ -63,14 +66,12 @@ const ProductDetail = () => {
 
     return (
         <>
-            <PageView title={data[0].name} backPath="/products">
+            <PageView title={data.user.fullName} backPath="/products">
                 <Container maxWidth="lg">
                     <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <StyledTab label="Product Details" />
-                        <StyledTab label="Product Category" />
+                        <StyledTab label="User Details" />
                     </StyledTabs>
                     {value === 0 && <ProductInfo product={data} />}
-                    {value === 1 && <ProductCategory product={data[0]} />}
                 </Container>
             </PageView>
         </>

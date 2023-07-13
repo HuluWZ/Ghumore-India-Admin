@@ -102,7 +102,7 @@ const ProductsView = ({
             password: product?.plainPassword,
             city: product?.city,
             address: product?.address,
-            role: product.role,
+            role: product?.role,
         };
     });
 
