@@ -18,9 +18,22 @@ const RecentOrder = ({ orders }: any) => {
         setAnchorEl(event.currentTarget);
     };
 
+    // console.log(" Recent Orders ", orders.booking.slice(0, 5))
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const getFullName = (obj: any) => {
+        const { contactDetails } = obj
+        if (!contactDetails) {
+            return "      No Name    "
+        }
+        else {
+            return contactDetails?.firstName + "  " + contactDetails?.lastName 
+        }
+
+    }
 
     return (
         <>
@@ -44,44 +57,32 @@ const RecentOrder = ({ orders }: any) => {
                         </Grid>
                         <Grid item xs={12}>
                             {/* show only 5 orders sort by created date */}
-                            {orders?.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5).map((order: any) => (
+                            {orders?.booking?.slice(0,5).map((order: any) => (
                                 <Grid container spacing={3} key={order._id}>
                                     <Grid item xs={12}>
                                         <Grid container alignItems="center" justifyContent="space-between">
                                             <Grid item>
                                                 <Typography variant="subtitle1" color="inherit">
-                                                    {order.fullName}
+                                                    { getFullName(order).slice(0,16) }
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
                                                 <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item>
                                                         <Typography variant="subtitle1" color="inherit">
-                                                            {order.paymentMethod}
+                                                             { order?.status}
                                                         </Typography>
                                                     </Grid>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item>
+                                                <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item>
-                                                        <Avatar
-                                                            variant="rounded"
-                                                            sx={{
-                                                                width: 16,
-                                                                height: 16,
-                                                                borderRadius: '50px',
-                                                                backgroundColor: order.status === 'success' ? theme.palette.success : theme.palette.light,
-                                                                color: order.status === 'success' ? theme.palette.success : theme.palette.dark,
-                                                                ml: 1
-                                                            }}
-                                                        >
-                                                            {order.status === 'Approved' ? (
-                                                                <Chip size="small" sx={{ backgroundColor: theme.palette.success.main, color: theme.palette.success }} />
-                                                            ) : order.status === 'Pending' ? (
-                                                                <Chip size="small" sx={{ backgroundColor: theme.palette.warning.main, color: theme.palette.warning }} />
-                                                            ) : order.status === 'Rejected' ? (
-                                                                <Chip size="small" sx={{ backgroundColor: theme.palette.error.main, color: theme.palette.error }} />
-                                                            ) : (
-                                                                <Chip size="small" sx={{ backgroundColor: theme.palette.error.main, color: theme.palette.error }} />
-                                                            )}
-                                                        </Avatar>
+                                                        <Typography variant="subtitle1" color="inherit">
+                                                            <a href={"tel:" + order?.contactDetails?.phoneNumber} >
+                                                                {order?.contactDetails?.phoneNumber?.slice(0,12) || "             "}
+                                                            </a>
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
@@ -96,7 +97,7 @@ const RecentOrder = ({ orders }: any) => {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="subtitle2" color="inherit">
-                                                    Payment Method
+                                                    {order?.totalPrice}
                                                 </Typography>
                                             </Grid>
                                         </Grid>

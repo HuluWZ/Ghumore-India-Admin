@@ -6,26 +6,29 @@ const token = localStorage.getItem("token") || "";
 
 //impliment crud operations
 export const getCategories = async () => {
+    console.log(" Get All Category - ")
     const response = await axios.get(`${url}activity/get`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });
-        console.log(" Category  = " , response.data)
+    console.log(" Category  = " , response.data)
 
     return response.data;
 };
 
 export const createCategory = async (data: any) => {
-    console.log(" Activity data = "+ data,JSON.parse(JSON.stringify(data)))
-    const response = await axios.post(`${url}activity/create`, data, {
+    console.log(" Activity data = ", data.images)
+    let newData = data.images
+    const response = await axios.post(`${url}activity/upload`, newData, {
         headers: {
+            // "Content-Type":"application/json"
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`
         },
     });
-    console.log(" Activity response = ", response)
+    console.log(" Activity Upload response = ", response)
     return response.data;
 };
 

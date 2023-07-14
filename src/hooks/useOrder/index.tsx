@@ -13,11 +13,12 @@ export const OrderProvider = ({ children }: any) => {
     const { data: orders, isLoading, isError } = useQuery('orders', getOrders);
     const { data: report, isLoading: reportLoading, isError: reportError } = useQuery('reportOrder', orderReport);
 
+    console.log(" Orders L =  ", orders);
 
     const { mutate: createOrderMutation } = useMutation(createOrder, {
         onSuccess: () => {
             queryClient.invalidateQueries('orders');
-            showNotification('Order created successfully', 'success')
+            showNotification('Booking created successfully', 'success')
         },
 
         onError: (error: any) => {
@@ -30,7 +31,7 @@ export const OrderProvider = ({ children }: any) => {
         useMutation((data: any) => updateOrder(data.id, data), {
             onSuccess: () => {
                 queryClient.invalidateQueries('orders');
-                showNotification('Order updated successfully', 'success')
+                showNotification('Booking Status Changed successfully', 'success')
             },
 
             onError: (error: any) => {
@@ -42,7 +43,7 @@ export const OrderProvider = ({ children }: any) => {
         useMutation((id: any) => approveOrder(id), {
             onSuccess: () => {
                 queryClient.invalidateQueries('orders');
-                showNotification('Order approved successfully', 'success')
+                showNotification('Booking approved successfully', 'success')
             },
 
             onError: (error: any) => {
@@ -53,7 +54,7 @@ export const OrderProvider = ({ children }: any) => {
     const { mutate: deleteOrderMutation } = useMutation(deleteOrder, {
         onSuccess: () => {
             queryClient.invalidateQueries('orders');
-            showNotification('Order deleted successfully', 'success')
+            showNotification('Booking deleted successfully', 'success')
         },
 
         onError: (error: any) => {

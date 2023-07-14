@@ -78,12 +78,14 @@ export const updateProduct = async (id: string, data: any) => {
 
 export const deleteProduct = async (id: string) => {
     try {
+        console.log(`${url}/delete/${id}`, id)
         const response = await axios.delete(`${url}/delete/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
+        console.log("Delete Product Response ", response.data)
         return response.data;
     } catch (error) {
         console.log(error);

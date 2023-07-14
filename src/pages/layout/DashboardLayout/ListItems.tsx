@@ -39,16 +39,6 @@ const listAdminItems = [
         name: 'Bookings',
         icon: <AddShoppingCartIcon />,
         path: '/app/orders',
-    },
-    {
-        name: 'Sales',
-        icon: <PointOfSaleIcon />,
-        path: '/app/sales',
-    },
-    {
-        name: 'Organizers',
-        icon: <GroupIcon />,
-        path: '/app/customers',
     }
 ];
 

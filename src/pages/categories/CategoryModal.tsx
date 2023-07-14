@@ -63,7 +63,7 @@ const FormDialog = ({
         rating: selectedCategory ? selectedCategory.rating : 4.6,
         location: selectedCategory ? selectedCategory.location : "",
         organizer: selectedCategory ? selectedCategory.organizer : "",
-        images: selectedCategory ? selectedCategory.images : "",
+        images: selectedCategory ? selectedCategory.images : [File],
         options: selectedCategory ? selectedCategory.options : [{ name: '', description: '', unitPrice: '', time: [''] }],
     };
 
@@ -82,7 +82,7 @@ const FormDialog = ({
     const [options, setOptions] = useState<Option[]>([{ name: '', description: '', unitPrice: '', time: [''] }]);
     const [content, setContent] = useState('');
     const [durationType, setDurationType] = useState('');
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState<File[]>([]);
 
   const handleDurationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDurationType(event.target.value);
@@ -112,8 +112,8 @@ const FormDialog = ({
        setContent(value);
     }
 
-    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
     }
 
 
@@ -132,16 +132,16 @@ const FormDialog = ({
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        values.images = images;
-                        // console.log(values, " Form Data "," Images - ",images);
+                        //  console.log(" Val ",values)
                         if (selectedCategory) {
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
+                            values.images = images;
                             values.description = content;
                             values.options = options;
                             values.durationType = durationType
-                            console.log(" Inserted Data - ",values);
+                            console.log(images," Inserted Data - ",values);
                             handleAdd(values);
                         }
                         resetForm();
@@ -340,7 +340,7 @@ const FormDialog = ({
                             />
 
                             <Button variant="contained" component="label">  Upload Images
-                                <Input type="file" style={{ display: 'none' }} onChange={handleUploadImages} multiple required />
+                                <Input type="file" style={{ display: 'none' }}  inputProps={{ multiple: true,required:true }} onChange={handleUploadImages}   />
                             </Button>
                             
                             <br></br>

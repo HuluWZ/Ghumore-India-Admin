@@ -31,7 +31,7 @@ import { HourglassBottomRounded } from "@mui/icons-material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 const ITEM_HEIGHT = 48;
 
 const OrdersView = ({
@@ -40,6 +40,7 @@ const OrdersView = ({
   setOpen,
   setOpenConfirm,
   approveOrderMutation,
+  updateOrderMutation,    
 }: any) => {
   const theme = useTheme();
 
@@ -136,28 +137,41 @@ const OrdersView = ({
                   <VisibilityRounded sx={{ color: "primary.main" }} />
                 </Link>
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => {
                   setOpen(true);
                   setSelectedOrder(params.row);
                 }}
               >
                 <EditRounded sx={{ color: "secondary.main" }} />
-              </MenuItem>
-              <MenuItem
+              </MenuItem> */}
+              {/* <MenuItem
                 onClick={() => {
-                  setOpenConfirm(true);
-                  setSelectedOrder(params.row);
+
+                  const data ={id:params.row.id,status:"Paid"}
+                  // setOpen(true);
+                  // setSelectedOrder(params.row);
+                  console.log(" Paid bookin -",data);
+                  updateOrderMutation(data);
                 }}
-              >
-                <DeleteForeverRounded sx={{ color: "error.main" }} />
-              </MenuItem>
+                >
+                <CurrencyRupeeRoundedIcon sx={{ color: "secondary.main" }} />
+              </MenuItem> */}
+
               <MenuItem
                 onClick={() => {
                   approveOrderMutation(params.row.id);
                 }}
-              >
+                >
                 <CheckCircleOutlineIcon sx={{ color: "success.main" }} />
+              </MenuItem>
+              <MenuItem
+                  onClick={() => {
+                    setOpenConfirm(true);
+                    setSelectedOrder(params.row);
+                  }}
+                >
+                <DeleteForeverRounded sx={{ color: "error.main" }} />
               </MenuItem>
             </Menu>
 
@@ -170,6 +184,7 @@ const OrdersView = ({
   const rows: GridRowsProp = orders?.booking?.map((item: any) => {
     return {
       id: item._id,
+      activity:item.activity.substr(-12),
       name: item.option?.name,
       unitPrice: item.option?.unitPrice,
       time: item.option?.time,

@@ -7,13 +7,14 @@ const token = localStorage.getItem("token");
 
 export const getOrders = async () => {
     try {
+        console.log(" Orders Get - Method ", `${url}/get`);
         const response = await axios.get(`${url}/get`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(" Orders ", response.data);
+        console.log(" Orders Get - Method ", response.data);
         return response.data;
     } catch (error) { 
         console.log(error);
@@ -33,6 +34,7 @@ export const createOrder = async (data: any) => {
 }
 
 export const updateOrder = async (id: string, data: any) => {
+    console.log(" Update Order - ", id, data);
     const response = await axios.put(`${url}/update/${id}`, data, {
         headers: {
             "Content-Type": "application/json",
@@ -40,31 +42,49 @@ export const updateOrder = async (id: string, data: any) => {
         },
     });
 
+    console.log(" Update Order Response ", response.data)
     return response.data;
 }
 
 export const deleteOrder = async (id: string) => {
-    const response = await axios.delete(`${url}/delete/${id}`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    return response.data;
+    try {
+        try {
+            console.log(`Delete Booking ${url}/delete/${id}`, id)
+            const response = await axios.delete(`${url}/delete/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log("Delete Order Response ", response.data)
+            return response.data;
+        }catch(error){
+            console.log(error);
+        }
+    
+    } catch (error) { 
+        console.log(error);
+    }
 
 }
 
 export const approveOrder = async (id: string) => {
-    console.log(id);
-    const response = await axios.get(`${url}/approve/${id}`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    try {
+        const data = {status:"Approved"}
+        console.log(" Approve Order - ",id , data);
+        const response = await axios.put(`${url}/update/${id}`,data,{
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    
+        console.log(" Approve Respone  ",response)
+        return response.data;
 
-    return response.data;
+    }catch(error){
+        console.log(error);
+    }
 }
 
 
@@ -81,14 +101,15 @@ export const orderReport = async () => {
 
 export const getOrder = async (id: string) => {
     try {
-
+        console.log(`Get Order ${url}/get/${id} `,id)
         const response = await axios.get(`${url}/get/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-
+       
+        console.log(" Get  Order Response    ", response.data)
         return response.data;
     }
     catch (error) {

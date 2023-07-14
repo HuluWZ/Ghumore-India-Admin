@@ -25,26 +25,28 @@ const Dashboard = () => {
   const { report, reportByWeek, isLoading } = useSales();
 
 
-  // console.log(orders);
-
+  
   var totalSalesMoneyFormat = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "INR",
   }).format(report?.TotalSales || 0);
-
-
+  
+  
   if (isLoading) {
+    console.log(" Orders oading L- ",orders);
+
     <PageView title="Dashboard">
       <LoadingComponent />
     </PageView>
   }
-
+  
   if (!products || !orders || !customers || !report || !reportByWeek) {
     <PageView title="Dashboard">
       <LoadingComponent />
     </PageView>
   }
-
+  
+  console.log(" Orders - ",orders);
 
 
   return (
@@ -82,7 +84,7 @@ const Dashboard = () => {
               <Grid item xs={12} md={4}>
                 <Grid container spacing={gridSpacing}>
                   <Grid item xs={12}>
-                    <RecentOrder orders={orders?.Orders || []} />
+                    <RecentOrder orders={orders || []} />
                   </Grid>
                 </Grid>
               </Grid>

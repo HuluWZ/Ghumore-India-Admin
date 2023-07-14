@@ -70,23 +70,23 @@ const Orders = () => {
         <PageView
             title="Booking"
             backPath="/app/dashboard"
-            actions={[
-                {
-                    icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Booking",
-                    handler: () => {
-                        setOpen(true)
-                        setSelectedOrder(null)
-                    },
-                    otherProps: {
-                        sx: {
-                            ml: "auto",
-                            fontSize: "10px",
-                        },
-                        variant: "contained",
-                    },
-                },
-            ]}
+            // actions={[
+            //     {
+            //         icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
+            //         label: "Add Booking",
+            //         handler: () => {
+            //             setOpen(true)
+            //             setSelectedOrder(null)
+            //         },
+            //         otherProps: {
+            //             sx: {
+            //                 ml: "auto",
+            //                 fontSize: "10px",
+            //             },
+            //             variant: "contained",
+            //         },
+            //     },
+            // ]}
         >
             <OrdersView
                 orders={orders}
