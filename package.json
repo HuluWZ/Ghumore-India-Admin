@@ -45,6 +45,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-dropzone": "^14.2.3",
     "react-helmet": "^6.1.0",
     "react-loader-spinner": "^5.3.4",
     "react-perfect-scrollbar": "^1.5.8",

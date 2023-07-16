@@ -19,9 +19,9 @@ export const getCategories = async () => {
 };
 
 export const createCategory = async (data: any) => {
-    console.log(" Activity data = ", data.images)
+    console.log(" Activity data = ", data)
     let newData = data.images
-    const response = await axios.post(`${url}activity/upload`, newData, {
+    const response = await axios.post(`${url}activity/create`, data, {
         headers: {
             // "Content-Type":"application/json"
             "Content-Type": "multipart/form-data",

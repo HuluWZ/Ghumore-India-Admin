@@ -12,9 +12,13 @@ import { ThreeDots } from "react-loader-spinner";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Input } from '@material-ui/core';
-
+import { useDropzone } from "react-dropzone";
+// import styles from "../styles/Home.module.css";
+import { useCallback, useMemo } from "react";
+import axios from "axios";
 
 const durationTypeList = ["days","hours","months","years"]
+const url = import.meta.env.VITE_API_URL;
 
 const modules = {
     toolbar: [
@@ -52,7 +56,7 @@ const FormDialog = ({
     setSelectedCategory,
 }: FormDialogProps) => {
     const initialValues = {
-        id: selectedCategory ? selectedCategory.id : "",
+        // id: selectedCategory ? selectedCategory.id : "",
         name: selectedCategory ? selectedCategory.name : "",
         description: selectedCategory ? selectedCategory.description : "",
         area: selectedCategory ? selectedCategory.area : "",
@@ -82,18 +86,75 @@ const FormDialog = ({
     const [options, setOptions] = useState<Option[]>([{ name: '', description: '', unitPrice: '', time: [''] }]);
     const [content, setContent] = useState('');
     const [durationType, setDurationType] = useState('');
-    const [images, setImages] = useState<File[]>([]);
+    // const [images, setImages] = useState<File[]>([]);
+      // Drop Zone TODO
+   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+   const [uploadStatus, setUploadStatus] = useState("");
+   const onDrop = useCallback((acceptedFiles: File[],rejectedFiles:File[]) => {
+    acceptedFiles.forEach((file: File) => {
+      setSelectedImages((prevState:File[]) => [...prevState, file]);
+    });
+   }, []);
+    
+     const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({ onDrop,maxFiles:4});
 
+    const onUpload = async () => {
+        try {
+            console.log(" Selected Images ",selectedImages);
+            setUploadStatus(" Uploading Started...");
+            var formData = new FormData();
+            var prom = selectedImages.map(async (image, index) => {
+                const newData = {"images":image}
+                console.log(" new Data ", newData);
+                // formData.append(`images${index}`, image, image.name);
+                // console.log(" Formdata ", formData);
+                const response = await axios.post(`${url}/activity/one`, newData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    });
+                    // console.log(" Response ", response);
+                    
+                console.log(" Response  ", response);
+                    // formData.push(obj);
+                // console.log("  Image with name ", image,image.name)
+                // formData.append(`images${index}`, image,image.name);
+                // console.log(" Formdata ", formData);
+                return response
+            });
+              // const resn = await Promise.all(prom);
+             // console.log(" Final Response ", resn);
+            // console.log(" Upload Image ", formData);
+           // return response?.dat
+           
+         // const uploadResult = Promise.all(uploadImg);
+        // console.log(" Images  to Upload ",uploadImg,uploadResult);
+
+     // console.log(" Upload Response - ",response);
+      setUploadStatus("Upload Successful");
+    } catch (error) {
+        console.log(" image Upload Error " + error);
+        setUploadStatus("Upload failed..Try Again");
+    }
+    };
+
+    const style = useMemo(
+    () => ({
+      ...(isDragAccept ? { borderColor: "#00e676" } : {}),
+      ...(isDragReject ? { borderColor: "#ff1744" } : {}),
+    }),
+    [isDragAccept, isDragReject]
+  );
   const handleDurationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDurationType(event.target.value);
     }
-    const handleUploadImages = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const files:any = event.target.files;
-        // console.log(" Current Uploaded ",files)
-        const uploadedImage:any = [...images, files]
-        // console.log(" Total Uploaded Image ",uploadedImage, " Prev ",images)
-        setImages(uploadedImage);
-  };
+  
 
 
     const handleAddOption = () => {
@@ -112,9 +173,6 @@ const FormDialog = ({
        setContent(value);
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-    }
 
 
     return (
@@ -125,24 +183,24 @@ const FormDialog = ({
         >
             <DialogTitle id="form-dialog-title" sx={{
             }}>
-                {selectedCategory ? "Edit Category" : "Add Category"}
+                {selectedCategory ? "Edit Activity" : "Add Activity"}
             </DialogTitle>
             <DialogContent sx={{ marginTop: "2rem" }}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        //  console.log(" Val ",values)
                         if (selectedCategory) {
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
-                            values.images = images;
+                            // values.images = selectedImages;
                             values.description = content;
                             values.options = options;
                             values.durationType = durationType
-                            console.log(images," Inserted Data - ",values);
+                            console.log(" Value Added : ",values)
                             handleAdd(values);
+                            setSelectedImages([])
                         }
                         resetForm();
                         setSubmitting(false);
@@ -157,7 +215,6 @@ const FormDialog = ({
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
-                        setFieldValue,
                     }: any) => (
                         <form onSubmit={handleSubmit}>
                             <TextField
@@ -268,12 +325,14 @@ const FormDialog = ({
 
         {options.map((option, index) => (
         <div key={index} >
-                <TextField
-                    id="name-"
+            <TextField
+            id="name-"
             label="Name"
             name="name"
             type="text"
-            value={option.name}
+                    value={option.name}
+                    variant="standard"
+                    required={true}
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
           />
           <TextField
@@ -281,28 +340,37 @@ const FormDialog = ({
             label="Description"
             name="description"
             type="text"
-            value={option.description}
+                    value={option.description}
+                    variant="standard"
+                    required={true}
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-          />
-                <TextField
-                    id="unitPrice"
+                />
+                <br></br>
+            <TextField
+            id="unitPrice"
             label="Unit Price"
             name="unitPrice"
             type="number"
-            value={option.unitPrice}
+                    value={option.unitPrice}
+                    required={true}
+                    variant="standard"
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-                                    />
-                                    
-                <TextField
-                id="time"
+                />                                    
+           <TextField
+            id="availableTime"
             label="Available Time"
             name="time"
-            type="text"
+            type="time"
             value={option.time}
+                    required={true}
+                    variant="standard"
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-          />
+         />
+        <br></br>
         </div>
       ))}
+
+    <br></br>
       <Button variant="contained" color="primary" onClick={handleAddOption}>
         Add Option
      </Button>
@@ -339,9 +407,31 @@ const FormDialog = ({
                                 }}
                             />
 
-                            <Button variant="contained" component="label">  Upload Images
+                            {/* <Button variant="contained" component="label">  Upload Images
                                 <Input type="file" style={{ display: 'none' }}  inputProps={{ multiple: true,required:true }} onChange={handleUploadImages}   />
-                            </Button>
+                            </Button> */}
+                            <div >
+      <div  {...getRootProps({ style })}>
+        <input {...getInputProps()}  required={true} multiple/>
+        {isDragActive ? (
+          <p>Drop file(s) here ...</p>
+        ) : (
+          <p>Drag and drop file(s) here, or click to select files</p>
+        )}
+      </div>
+      <div >
+        {selectedImages.length > 0 &&
+          selectedImages.map((image, index) => (
+            <img src={`${URL.createObjectURL(image)}`} key={index} alt=""  width="200" height="200"/>
+          ))}
+      </div>
+      {selectedImages.length > 0 && (
+        <div>
+          <Button type="submit" variant="contained" onClick={onUpload} >Upload To Cloud</Button>
+          <p>{uploadStatus}</p>
+        </div>
+      )}
+    </div>
                             
                             <br></br>
                             <DialogActions>
