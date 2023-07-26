@@ -1,11 +1,9 @@
 import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
-
 const token = localStorage.getItem("token") || "";
 
-
-//impliment crud operations
-export const getCategories = async () => {
+  //impliment crud operations
+  export const getCategories = async () => {
     console.log(" Get All Category - ")
     const response = await axios.get(`${url}activity/get`, {
         headers: {
@@ -13,13 +11,14 @@ export const getCategories = async () => {
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(" Category  = " , response.data)
+    console.log(" Category - " , response.data)
 
     return response.data;
 };
 
 export const createCategory = async (data: any) => {
     console.log(" Activity data = ", data)
+    console.log(" Options ",data.options)
     let newData = data.images
     const response = await axios.post(`${url}activity/create`, data, {
         headers: {

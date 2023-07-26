@@ -30,13 +30,13 @@ const CategoriesView = ({
   const theme = useTheme();
 
   const navigate = useNavigate();
-  console.log(" Categories ", categories);
+  console.log(" Categories Data ", categories);
   const rows: GridRowsProp = categories?.activity?.map((item: any) => {
     return {
           id: item._id,
           name: item.name,
           description: item.description,
-          area: item.area,
+          category: item.category.name,
           price: item.price,
           totalCapacity: item.totalCapacity,
           duration: item.duration,
@@ -60,8 +60,8 @@ const CategoriesView = ({
             width: 150,
         },
         {
-            field: "area",
-            headerName: "Area",
+            field: "category",
+            headerName: "Category",
             width: 150,
         },
         {
@@ -84,7 +84,13 @@ const CategoriesView = ({
             field: "location",
             headerName: "Location",
             width: 150,
-        },
+            renderCell:(params:any)=>(
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <a href={params.row.location.url} target="_blank">{params.row.location.name}</a>
+             </Box>
+
+            )
+         },
          {
             field: "organizer",
             headerName: "Organizer",

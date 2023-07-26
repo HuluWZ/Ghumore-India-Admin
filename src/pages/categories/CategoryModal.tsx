@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useState,useEffect } from 'react';
 import TextField from "@mui/material/TextField";
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from "@mui/material/Dialog";
@@ -16,9 +16,11 @@ import { useDropzone } from "react-dropzone";
 // import styles from "../styles/Home.module.css";
 import { useCallback, useMemo } from "react";
 import axios from "axios";
+import { Select,InputLabel } from '@material-ui/core';
+import FormControl from '@mui/material/FormControl';
 
 const durationTypeList = ["days","hours","months","years"]
-const url = import.meta.env.VITE_API_URL;
+const api = import.meta.env.VITE_API_URL;
 
 const modules = {
     toolbar: [
@@ -47,6 +49,36 @@ interface Option {
       [key: string]: string | string[] | Option[] | undefined;
 }
 
+
+
+  
+const formatData = (formData: any) => {
+    const formDate = new FormData();
+    formDate.append("name", formData.name)
+    formDate.append("description", formData.description)
+    formDate.append("price", formData.price)
+    formDate.append("totalCapacity", formData.totalCapacity)
+    formDate.append("duration", formData.duration)
+    formDate.append("durationType", formData?.durationType)
+    formDate.append("rating", formData?.rating)
+    // formDate.append("location", formData.location)
+    // formDate.append("category", formData.category)
+    formDate.append("organizer", formData.organizer)
+    formDate.append("startDate", formData.startDate)
+    formDate.append("endDate", formData.endDate)
+    formDate.append("lastBookingDate", formData.lastBookingDate)
+    formDate.append("options", formData.options)
+    formDate.append("include", formData?.include)
+    formDate.append("exclude", formData?.exclude)
+
+    const { images } = formData;
+    console.log(" images ",images);
+    images?.map((image:File) => {
+        formDate.append("images", image);
+    })
+
+    return formDate;
+  }
 const FormDialog = ({
     open,
     handleClose,
@@ -59,103 +91,95 @@ const FormDialog = ({
         // id: selectedCategory ? selectedCategory.id : "",
         name: selectedCategory ? selectedCategory.name : "",
         description: selectedCategory ? selectedCategory.description : "",
-        area: selectedCategory ? selectedCategory.area : "",
         price: selectedCategory ? selectedCategory.price : "",
         totalCapacity: selectedCategory ? selectedCategory.totalCapacity : "",
         duration: selectedCategory ? selectedCategory.duration : "",
         durationType: selectedCategory ? selectedCategory.durationType : "",
         rating: selectedCategory ? selectedCategory.rating : 4.6,
         location: selectedCategory ? selectedCategory.location : "",
+        category: selectedCategory ? selectedCategory.category : "",
         organizer: selectedCategory ? selectedCategory.organizer : "",
-        images: selectedCategory ? selectedCategory.images : [File],
+        startDate: selectedCategory ? selectedCategory.startDate : '',
+        endDate: selectedCategory ? selectedCategory.endDate : '',
+        lastBookingDate: selectedCategory ? selectedCategory.lastBookingDate : "",
+        images: selectedCategory ? selectedCategory.images : '',
         options: selectedCategory ? selectedCategory.options : [{ name: '', description: '', unitPrice: '', time: [''] }],
     };
+    const [formData, setFormData] = useState({
+        name:  "",
+        description: "",
+        price: "",
+        totalCapacity:  "",
+        duration:  "",
+        durationType:  "",
+        rating:  '',
+        location:  "",
+        category: "",
+        organizer:   "",
+        startDate:  '',
+        endDate:  '',
+        lastBookingDate: "",
+        images: '',
+        options: ''
+  })
 
     const validationSchema = Yup.object({
         name: Yup.string().required("Required"),
-        area: Yup.string().required("Required"),
         price: Yup.string().required("Required"),
         totalCapacity: Yup.string().required("Required"),
         duration: Yup.string().required("Required"),
-        location: Yup.string().required("Required"),
-        organizer:Yup.string().required("Required"),
+        // location: Yup.string().required("Required"),
+        // category: Yup.string().required("Required"),
+        organizer: Yup.string().required("Required"),
+        startDate: Yup.date().required("Required"),
+        endDate: Yup.date().required("Required"),
+        lastBookingDate: Yup.date().required("Required"),
         // images: Yup.mixed().required("Required"),
     });
- 
-
+    const [locations, setLocations] = useState([{ _id: '', name: '' }]);
+    const [categories, setCategories] = useState([{ _id: '', name: '' }]);
+    useEffect(() => {
+        async function fetchLocations() {
+            const response = await fetch(`${api}location/get`);
+            const data = await response.json();
+            console.log(" Get All Locations ", data?.location)
+            setLocations(data?.location);
+        }
+        fetchLocations();
+    }, []);
+    
+    useEffect(() => {
+        async function fetchCategorys() {
+            const response = await fetch(`${api}category/get`);
+            const data = await response.json();
+            console.log(" Get All Category ", data?.category)
+            setCategories(data?.category);
+        }
+        fetchCategorys();
+    }, []);
     const [options, setOptions] = useState<Option[]>([{ name: '', description: '', unitPrice: '', time: [''] }]);
     const [content, setContent] = useState('');
     const [durationType, setDurationType] = useState('');
+
+    const [location, setLocation] = useState('')
+    const [category, setCategory] = useState('')
+
     // const [images, setImages] = useState<File[]>([]);
-      // Drop Zone TODO
-   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-   const [uploadStatus, setUploadStatus] = useState("");
-   const onDrop = useCallback((acceptedFiles: File[],rejectedFiles:File[]) => {
-    acceptedFiles.forEach((file: File) => {
-      setSelectedImages((prevState:File[]) => [...prevState, file]);
-    });
-   }, []);
+    // Drop Zone TODO
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
+    const [uploadStatus, setUploadStatus] = useState("");
+  
     
-     const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop,maxFiles:4});
-
-    const onUpload = async () => {
-        try {
-            console.log(" Selected Images ",selectedImages);
-            setUploadStatus(" Uploading Started...");
-            var formData = new FormData();
-            var prom = selectedImages.map(async (image, index) => {
-                const newData = {"images":image}
-                console.log(" new Data ", newData);
-                // formData.append(`images${index}`, image, image.name);
-                // console.log(" Formdata ", formData);
-                const response = await axios.post(`${url}/activity/one`, newData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    });
-                    // console.log(" Response ", response);
-                    
-                console.log(" Response  ", response);
-                    // formData.push(obj);
-                // console.log("  Image with name ", image,image.name)
-                // formData.append(`images${index}`, image,image.name);
-                // console.log(" Formdata ", formData);
-                return response
-            });
-              // const resn = await Promise.all(prom);
-             // console.log(" Final Response ", resn);
-            // console.log(" Upload Image ", formData);
-           // return response?.dat
-           
-         // const uploadResult = Promise.all(uploadImg);
-        // console.log(" Images  to Upload ",uploadImg,uploadResult);
-
-     // console.log(" Upload Response - ",response);
-      setUploadStatus("Upload Successful");
-    } catch (error) {
-        console.log(" image Upload Error " + error);
-        setUploadStatus("Upload failed..Try Again");
+    const handleDurationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDurationType(event.target.value);
     }
-    };
-
-    const style = useMemo(
-    () => ({
-      ...(isDragAccept ? { borderColor: "#00e676" } : {}),
-      ...(isDragReject ? { borderColor: "#ff1744" } : {}),
-    }),
-    [isDragAccept, isDragReject]
-  );
-  const handleDurationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDurationType(event.target.value);
+    const handleLocationChange = (event: React.ChangeEvent<{ value?: string | unknown }>) => {
+        setLocation(event.target.value as string);
     }
   
-
+    const handleCategoryChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
+        setCategory(event.target.value as string);
+    }
 
     const handleAddOption = () => {
      const newOptions:Option[] = [...options, { name: '', description: '', unitPrice: '', time:[''] }];
@@ -166,14 +190,25 @@ const FormDialog = ({
         const { name, value } = event.target;
         var newOptions:Option[] = [...options];
         // console.log( " Name - ",event.target.name," Value - ",event.target.value);
-        newOptions[index][name] = value;
-        setOptions(newOptions);
+        if (name == 'time') {
+            newOptions[index][name] = [value]
+            setOptions(newOptions);
+        } else {       
+            newOptions[index][name] = value;
+            setOptions(newOptions);
+        }
     }
     const handleEditorChange = (value:string) => {
        setContent(value);
     }
 
-
+ const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const selectedFilesArray = Array.from(files);
+      setSelectedImages(selectedFilesArray);
+    }
+  };
 
     return (
         <Dialog
@@ -194,12 +229,15 @@ const FormDialog = ({
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
-                            // values.images = selectedImages;
+                            // values.location = location;
+                            // values.category = category;
+                            values.images = selectedImages;
                             values.description = content;
                             values.options = options;
                             values.durationType = durationType
-                            console.log(" Value Added : ",values)
-                            handleAdd(values);
+                            const data = formatData(values);
+                            console.log(" Value Added : ",values,data)
+                            handleAdd(data);
                             setSelectedImages([])
                         }
                         resetForm();
@@ -237,37 +275,27 @@ const FormDialog = ({
                             <h4>Description</h4>
                             <ReactQuill theme="snow"  id="content" value={content} onChange={handleEditorChange}  modules={modules} formats={formats} />
                             <br></br>
-                            <TextField
-                                autoFocus
-                                id="area"
-                                label="Area"
-                                type="text"
-                                variant="standard"
-                                value={values.area}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.area && errors.area)}
-                                helperText={touched.area && errors.area}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
-                            <TextField
-                                autoFocus
-                                id="location"
-                                label="Location"
-                                fullWidth
-                                type="text"
-                                variant="standard"
-                                value={values.location}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.location && errors.location)}
-                                helperText={touched.location && errors.location}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
+                            
+
+        <FormControl   sx={{ m: 1, minWidth: 200 }} margin='normal'>
+                    
+       <InputLabel> Select Location </InputLabel>
+        <Select value={location} onChange={handleLocationChange} label="Select Location">
+          {locations.map((location) => (
+            <MenuItem key={location._id} value={location._id}>{location.name}</MenuItem>
+          ))}
+        </Select>
+        </FormControl>
+
+ <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
+        <InputLabel> Select Category</InputLabel>
+        <Select value={category}  onChange={handleCategoryChange} label="Select Category">
+          {categories?.map((cat) => (
+            <MenuItem key={cat?._id} value={cat?._id}>{cat?.name}</MenuItem>
+          ))}
+        </Select>
+                            </FormControl>   
+                            <br></br>
                             <TextField
                                 autoFocus
                                 id="price"
@@ -306,7 +334,7 @@ const FormDialog = ({
                                 name="durationType"
                                 select
                                 variant="standard"
-                                value={values.durationType}
+                                value={durationType}
                                 defaultValue="days"
                                 onChange={handleDurationTypeChange}
                                 // onBlur={handleBlur}
@@ -364,7 +392,12 @@ const FormDialog = ({
             value={option.time}
                     required={true}
                     variant="standard"
-            onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
+                    InputProps={{
+          inputProps: {
+            multiple: true,
+          },
+        }}
          />
         <br></br>
         </div>
@@ -406,31 +439,59 @@ const FormDialog = ({
                                     marginBottom:2
                                 }}
                             />
+              
+              <br></br>
+                    
+        <TextField
+            id="startDate"
+            label="Start Date"
+            type="date"
+            value={values.startDate}
+            required={true}
+            // variant="outlined"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={Boolean(touched.startDate && errors.startDate)}
+            helperText={touched.startDate && errors.startDate}
+            sx={{
+                    marginBottom:2
+                }}
+        />
+                                
 
-                            {/* <Button variant="contained" component="label">  Upload Images
-                                <Input type="file" style={{ display: 'none' }}  inputProps={{ multiple: true,required:true }} onChange={handleUploadImages}   />
-                            </Button> */}
+        <TextField
+            id="endDate"
+            label="End Date"
+            type="date"
+            value={values.endDate}
+           required={true}
+                                // variant="filled"
+                                onChange={handleChange}
+                                 onBlur={handleBlur}
+                                error={Boolean(touched.endDate && errors.endDate)}
+                                helperText={touched.endDate && errors.endDate}
+                                sx={{
+                                    marginBottom:2
+                                }}
+         /><TextField
+            id="lastBookingDate"
+            label="Last Booking Date"
+            type="date"
+            value={values.lastBookingDate}
+           required={true}
+                                // variant="standard"
+                                onChange={handleChange}
+         />
+                            <Button variant="contained" component="label">  Upload Images
+                                <Input type="file" style={{ display: 'none' }}  inputProps={{ multiple: true,required:true }} onChange={handleFileSelect}   />
+                            </Button>
                             <div >
-      <div  {...getRootProps({ style })}>
-        <input {...getInputProps()}  required={true} multiple/>
-        {isDragActive ? (
-          <p>Drop file(s) here ...</p>
-        ) : (
-          <p>Drag and drop file(s) here, or click to select files</p>
-        )}
+      <div>
+        {selectedImages?.map((file) => (
+        <img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />
+      ))}
       </div>
-      <div >
-        {selectedImages.length > 0 &&
-          selectedImages.map((image, index) => (
-            <img src={`${URL.createObjectURL(image)}`} key={index} alt=""  width="200" height="200"/>
-          ))}
-      </div>
-      {selectedImages.length > 0 && (
-        <div>
-          <Button type="submit" variant="contained" onClick={onUpload} >Upload To Cloud</Button>
-          <p>{uploadStatus}</p>
-        </div>
-      )}
+      
     </div>
                             
                             <br></br>

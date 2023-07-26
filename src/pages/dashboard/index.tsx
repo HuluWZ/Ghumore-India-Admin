@@ -14,7 +14,7 @@ import { useSales } from "../../hooks/useSales";
 import PageView from "../../components/PageView";
 import LoadingComponent from "../../components/LoadingComponent";
 import { useCategory } from "../../hooks/useCategory";
-
+import { useLocation} from "../../hooks/useLocation";
 
 const Dashboard = () => {
   const gridSpacing: number = 3;
@@ -22,10 +22,11 @@ const Dashboard = () => {
   const { orders } = useOrder();
   const { customers } = useCustomer();
   const { categories } = useCategory();
+  const { locations } = useLocation();
   const { report, reportByWeek, isLoading } = useSales();
 
 
-  
+  console.log(" Welcoem Dash ",customers,locations)
   var totalSalesMoneyFormat = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "INR",
@@ -40,7 +41,7 @@ const Dashboard = () => {
     </PageView>
   }
   
-  if (!products || !orders || !customers || !report || !reportByWeek) {
+  if (!products || !orders || !customers || !report || !reportByWeek ||!locations) {
     <PageView title="Dashboard">
       <LoadingComponent />
     </PageView>
@@ -70,7 +71,7 @@ const Dashboard = () => {
                     <TotalIncome totalSales={totalSalesMoneyFormat || 0} />
                   </Grid>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    <TotalCustomer totalCustomer={customers?.totalUsers || 0} />
+                    <TotalCustomer totalCustomer={locations?.totalLocation || 0} />
                   </Grid>
                 </Grid>
               </Grid>

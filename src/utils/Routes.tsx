@@ -25,6 +25,8 @@ import DiscountList from '../pages/discounts';
 import OrderList from '../pages/orders';
 import OrderDetail from '../pages/orders/OrderDetail';
 
+import LocationList from '../pages/locations';
+
 import SaleList from '../pages/sales';
 import SalesDetail from '../pages/sales/SalesDetail';
 
@@ -64,6 +66,9 @@ const RoutesComponent = () => {
                         <Route index element={<OrderList />} />
                         <Route path=":id" element={<OrderDetail />} />
                     </Route>
+
+                    <Route path="location" element={<LocationList />} />
+
                     <Route path="reports" element={<Outlet />}>
                         <Route index element={<ReportList />} />
                         <Route path="order" element={<OrderReport />} />

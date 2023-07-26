@@ -17,7 +17,7 @@ import { NavLink } from 'react-router-dom';
 import { listItemClasses } from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import { Typography, colors } from "@mui/material";
-
+import ExploreIcon from '@mui/icons-material/Explore';
 
 const listAdminItems = [
     {
@@ -39,6 +39,11 @@ const listAdminItems = [
         name: 'Bookings',
         icon: <AddShoppingCartIcon />,
         path: '/app/orders',
+    },
+    {
+        name: 'Location',
+        icon: <ExploreIcon />,
+        path: '/app/location',
     }
 ];
 
@@ -104,7 +109,3 @@ export const secondaryListItems = (
         </List>
     </React.Fragment>
 );
-
-
-
-
