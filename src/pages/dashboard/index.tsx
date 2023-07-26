@@ -71,7 +71,7 @@ const Dashboard = () => {
                     <TotalIncome totalSales={totalSalesMoneyFormat || 0} />
                   </Grid>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    <TotalCustomer totalCustomer={locations?.totalLocation || 0} />
+                    <TotalCustomer totalCustomer={customers?.totalUsers || 0} />
                   </Grid>
                 </Grid>
               </Grid>
