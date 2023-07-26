@@ -14,7 +14,7 @@ import { Select,InputLabel,Input } from '@material-ui/core';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Location Name is required"),
-    image: Yup.string().required("Location image is required"),
+    // image: Yup.string().required("Location image is required"),
     url: Yup.string().required("Location URL is required"),
 });
 
@@ -72,9 +72,10 @@ const FormDialog = (props: FormDialogProps) => {
                             handleUpdate(values);
                         } else {
                             values.image = file
-                            parent ? values.parent = parent : ''
-                            console.log(" Values ",values)
+                            parent ?? values.parent;
+                            console.log(" Submited Values ",values)
                             handleAdd(values);
+                            SetFile(null)
                         }
                         setSubmitting(false);
                         handleClose();
@@ -95,7 +96,6 @@ const FormDialog = (props: FormDialogProps) => {
                                 autoFocus
                                 margin="dense"
                                 id="name"
-                                name="Name"
                                 label="Location Name"
                                 type="text"
                                 fullWidth
@@ -109,7 +109,7 @@ const FormDialog = (props: FormDialogProps) => {
                             <br></br>
             <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
                  <InputLabel> Select Parent Location</InputLabel>
-                 <Select value={parent}  onChange={handleParent} label="Select Category">
+                 <Select value={parent} id="parent" onChange={handleParent} label="Select Category">
                    {locations?.map((loc) => (
                     <MenuItem key={loc?._id} value={loc?._id}>{loc?.name}</MenuItem>
                     ))}
@@ -119,7 +119,6 @@ const FormDialog = (props: FormDialogProps) => {
                             <TextField
                                 margin="dense"
                                 id="url"
-                                name="Location URL"
                                 label="Location URL"
                                 type="text"
                                 fullWidth
@@ -133,7 +132,7 @@ const FormDialog = (props: FormDialogProps) => {
                             {
                                 values?.url && (
                                 <iframe src={values?.url}
-                                        width="300" height="300"  loading="lazy"
+                                        width="500" height="300"  loading="lazy"
                                         referrerPolicy="no-referrer-when-downgrade">
                                     
                                     </iframe>
@@ -141,7 +140,7 @@ const FormDialog = (props: FormDialogProps) => {
                             }
                             <br></br>
                             <Button variant="contained" component="label">  Upload Image
-                                <Input type="file" style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
+                                <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
                             </Button>
                             <div >
       <div>

@@ -22,12 +22,14 @@ export const getCustomers = async () => {
 
 //create category
 export const createCustomer = async (data: any) => {
+    console.log(" Add Location : ", data,api)
     const response = await axios.post(`${api}create`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
     });
+    console.log(" Response : ", response.data);
 
     return response.data;
 }

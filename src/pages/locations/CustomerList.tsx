@@ -77,8 +77,8 @@ const LocationsView = ({
                 return <>
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         <a href={row?.url} target="_blank">View On Map</a>
-                         <iframe src={row?.url}  width="400" height="300" loading="lazy"> 
-                        </iframe> 
+                         {/* <iframe src={row?.url}  width="400" height="300" loading="lazy"> 
+                        </iframe>  */}
                     </Box>
                 </>
             }
