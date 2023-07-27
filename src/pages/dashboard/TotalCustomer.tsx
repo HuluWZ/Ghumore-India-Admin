@@ -67,7 +67,7 @@ const TotalCustomer = ({ totalCustomer }: any) => {
                             }
                             secondary={
                                 <Typography variant="h6" sx={{ color: '#fff' }}>
-                                    Total Location
+                                    Total User
                                 </Typography>
                             }
                         />
