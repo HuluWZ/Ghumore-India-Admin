@@ -14,7 +14,8 @@ import { useSales } from "../../hooks/useSales";
 import PageView from "../../components/PageView";
 import LoadingComponent from "../../components/LoadingComponent";
 import { useCategory } from "../../hooks/useCategory";
-import { useLocation} from "../../hooks/useLocation";
+import { useLocation } from "../../hooks/useLocation";
+import { useDestination } from "../../hooks/useDestination";
 
 const Dashboard = () => {
   const gridSpacing: number = 3;
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const { customers } = useCustomer();
   const { categories } = useCategory();
   const { locations } = useLocation();
+  const { destination } = useDestination()
   const { report, reportByWeek, isLoading } = useSales();
 
 

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { getCustomers, createCustomer, getCustomerById, updateCustomer, deleteCustomer } from '../../api/locationApi';
+import { getCustomers, createCustomer, getCustomerById, updateCustomer, deleteCustomer } from '../../api/destinationApi';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useNotification } from '../useNotification';
 
@@ -14,7 +14,7 @@ export const CustomerProvider = ({ children }: any) => {
     console.log(" Locations  All ",customers)
     const { mutate: createCustomerMutation, isLoading: createCustomerLoading } = useMutation(createCustomer, {
         onSuccess: () => {
-            showNotification(' Location Added  successfully', 'success');
+            showNotification(' Category Added  successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 
@@ -26,7 +26,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { mutate: updateCustomerMutation, isLoading: updateCustomerLoading } = useMutation((data: any) => updateCustomer(data.id, data), {
         onSuccess: () => {
-            showNotification('Location updated successfully', 'success');
+            showNotification('Category updated successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 
@@ -37,7 +37,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { mutate: deleteCustomerMutation, isLoading: deleteCustomerLoading } = useMutation(deleteCustomer, {
         onSuccess: () => {
-            showNotification('Location Deleted  successfully', 'success');
+            showNotification('Category Deleted  successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 
@@ -59,10 +59,9 @@ export const CustomerProvider = ({ children }: any) => {
                 deleteCustomerLoading,
             }
     
-    
     return ( <CustomerContext.Provider value={value}>{children}</CustomerContext.Provider>)
     
 };
 
 
-export const useLocation = () => useContext(CustomerContext);
+export const useDestination = () => useContext(CustomerContext);

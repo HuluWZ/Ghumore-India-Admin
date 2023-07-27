@@ -18,7 +18,7 @@ import { listItemClasses } from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import { Typography, colors } from "@mui/material";
 import ExploreIcon from '@mui/icons-material/Explore';
-
+import ParaglidingIcon from '@mui/icons-material/Paragliding';
 const listAdminItems = [
     {
         name: 'Dashboard',
@@ -44,6 +44,11 @@ const listAdminItems = [
         name: 'Location',
         icon: <ExploreIcon />,
         path: '/app/location',
+    },
+    {
+        name: 'Category',
+        icon: <ParaglidingIcon />,
+        path: '/app/category',
     }
 ];
 

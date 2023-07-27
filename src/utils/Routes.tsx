@@ -26,6 +26,7 @@ import OrderList from '../pages/orders';
 import OrderDetail from '../pages/orders/OrderDetail';
 
 import LocationList from '../pages/locations';
+import DestinationList from '../pages/destination';
 
 import SaleList from '../pages/sales';
 import SalesDetail from '../pages/sales/SalesDetail';
@@ -68,6 +69,7 @@ const RoutesComponent = () => {
                     </Route>
 
                     <Route path="location" element={<LocationList />} />
+                    <Route path="category" element={<DestinationList />} />
 
                     <Route path="reports" element={<Outlet />}>
                         <Route index element={<ReportList />} />
