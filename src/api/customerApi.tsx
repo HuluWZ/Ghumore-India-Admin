@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
-const api = `${url}auth/`;
+const api = `${url}location/`;
 
 
 const token = localStorage.getItem("token") || "";
@@ -16,7 +16,7 @@ export const getCustomers = async () => {
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(" Customers ", response.data)
+    console.log(" All  Customers ", response.data)
     return response.data;
 }
 
@@ -24,7 +24,7 @@ export const getCustomers = async () => {
 export const createCustomer = async (data: any) => {
     const response = await axios.post(`${api}create`, data, {
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
     });

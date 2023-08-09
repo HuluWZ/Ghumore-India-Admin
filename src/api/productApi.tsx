@@ -42,13 +42,14 @@ export const getProduct = async (id: string) => {
 
 export const createProduct = async (data: any) => {
     try {
+        console.log(" Create User ",data);
         const response = await axios.post(`${url}/create`, data, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(" Create Product -  ",response?.data,data)
+        console.log(" Create User -  ",response?.data,data)
         return response.data;
     }
     catch (error) {

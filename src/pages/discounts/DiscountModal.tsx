@@ -6,94 +6,80 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ButtonGroup, Button } from "@mui/material";
-import { ThreeDots } from "react-loader-spinner";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import FormHelperText from "@mui/material/FormHelperText";
-import { Grid } from "@mui/material";
-import { useProduct } from "../../hooks/useProduct";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from "@mui/x-date-pickers";
+import { Button, ButtonGroup, MenuItem } from "@mui/material";
+import FormControl from '@mui/material/FormControl';
+import { useState, useEffect } from 'react';
+const api = import.meta.env.VITE_API_URL;
+import { Select,InputLabel,Input } from '@material-ui/core';
 
-import moment from 'moment';
+const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Location Name is required"),
+    // image: Yup.string().required("Location image is required"),
+    url: Yup.string().required("Location URL is required"),
+});
+
 
 type FormDialogProps = {
     open: boolean;
     handleClose: () => void;
-    selectedDiscount: any;
-    setDiscount: any;
     handleCreate: (values: any) => void;
     handleUpdate: (values: any) => void;
-};
+    selectedDiscount: any;
+    setDiscount: any;
+}
 
-const FormDialog = ({
-    open,
-    handleClose,
-    selectedDiscount,
-    setDiscount,
-    handleCreate,
-    handleUpdate,
-}: FormDialogProps) => {
-    const { products } = useProduct();
-    const [selectedDate, handleDateChange] = React.useState<Date | null>(
-        new Date()
-    );
-    const [selectedDate2, handleDateChange2] = React.useState<Date | null>(
-        new Date()
-    );
 
-    const validationSchema = Yup.object({
-        name: Yup.string().required("Name is required"),
-        description: Yup.string().required("Description is required"),
-        rate: Yup.number().required("Rate is required"),
-        startDate: Yup.date().required("Start Date is required"),
-        endDate: Yup.date().required("End Date is required"),
-        product: Yup.string().required("Product is required"),
-    });
+
+const FormDialog = (props: FormDialogProps) => {
+    const { open, handleClose, handleCreate, handleUpdate, selectedDiscount, setDiscount } = props;
+       const [locations, setLocations] = useState([{ _id: '', name: '' }]);
+       useEffect(() => {
+        async function fetchCategorys() {
+            const response = await fetch(`${api}location/get`);
+            const data = await response.json();
+            console.log(" Get All Category : ", data?.category)
+            setLocations(data?.location);
+        }
+        fetchCategorys();
+       }, []);
+    const [parent, SetParent] = useState('');
+    const [file, SetFile] = useState<File | null>(null);
+     const handleParent = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
+        SetParent(event.target.value as string);
+    }
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+        SetFile(file)
+    }
 
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-        >
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">
-                {selectedDiscount ? "Update Discount" : "Create Discount"}
+                {selectedDiscount ? "Update Location" : "Add Location"}
             </DialogTitle>
             <DialogContent>
                 <Formik
                     initialValues={{
-                        id: selectedDiscount?._id || "",
+                        id: selectedDiscount?.id || "",
                         name: selectedDiscount?.name || "",
-                        description: selectedDiscount?.description || "",
-                        rate: selectedDiscount?.rate || "",
-                        startDate: selectedDiscount?.startDate || "",
-                        endDate: selectedDiscount?.endDate || "",
-                        product: selectedDiscount?.product || "",
+                        parent: selectedDiscount?.parent || "",
+                        image: selectedDiscount?.image || "",
+                        url: selectedDiscount?.url || ""
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
-                        try {
-                            if (selectedDiscount) {
-                                handleUpdate(values);
-                                resetForm();
-                                handleClose();
-                            }
-                            if (!selectedDiscount) {
-                                handleCreate(values);
-                                resetForm();
-                                handleClose();
-                            }
-                            setSubmitting(false);
-                        } catch (error) {
-                            console.log(error);
+                    onSubmit={(values, { setSubmitting }) => {
+                        if (selectedDiscount) {
+                            handleUpdate(values);
+                        } else {
+                            values.image = file
+                            parent ?? values.parent;
+                            console.log(" Submited Values ",values)
+                            handleCreate(values);
+                            SetFile(null)
                         }
-                    }
-                    }
+                        setSubmitting(false);
+                        handleClose();
+                    }}
                 >
                     {({
                         values,
@@ -103,118 +89,75 @@ const FormDialog = ({
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
-                        setFieldValue,
                         /* and other goodies */
-                    }: any
-                    ) => (
+                    }: any) => (
                         <form onSubmit={handleSubmit}>
-                            <Grid container spacing={4}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        autoFocus
-                                        margin="dense"
-                                        id="name"
-                                        label="Name"
-                                        type="text"
-                                        fullWidth
-                                        variant="standard"
-                                        value={values.name}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={touched.name && Boolean(errors.name)}
-                                        helperText={touched.name && errors.name}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        margin="dense"
-                                        id="description"
-                                        label="Description"
-                                        type="text"
-                                        fullWidth
-                                        variant="standard"
-                                        value={values.description}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={touched.description && Boolean(errors.description)}
-                                        helperText={touched.description && errors.description}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        margin="dense"
-                                        id="rate"
-                                        label="Rate"
-                                        type="number"
-                                        fullWidth
-                                        variant="standard"
-                                        value={values.rate}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={touched.rate && Boolean(errors.rate)}
-                                        helperText={touched.rate && errors.rate}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} mb={2} mt={2}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Product</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={values.product}
-                                            label="Product"
-                                            onChange={(e: any) => {
-                                                setFieldValue(
-                                                    "product", e.target.value
-                                                )
-                                            }
-                                            }
-                                            onBlur={handleBlur}
-                                            error={touched.product && Boolean(errors.product)}
-                                        >
-                                            {products.product.map((item: any, index: number) => (
-                                                <MenuItem key={index} value={item._id}>{item.name}</MenuItem>
-                                            ))}
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Location Name"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.name && Boolean(errors.name)}
+                                helperText={touched.name && errors.name}
+                            />
+                            <br></br>
+            <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
+                 <InputLabel> Select Parent Location</InputLabel>
+                 <Select value={parent} id="parent" onChange={handleParent} label="Select Category">
+                   {locations?.map((loc) => (
+                    <MenuItem key={loc?._id} value={loc?._id}>{loc?.name}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
 
-                                        </Select>
-                                        {touched.product && errors.product ? (
-                                            <FormHelperText error>{errors.product}</FormHelperText>
-                                        ) : null}
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DatePicker label="Start Date"
-                                            value={selectedDate}
-                                            onChange={(newValue) => {
-                                                handleDateChange(newValue);
-                                                values.startDate = moment(newValue).format("YYYY-MM-DD");
-                                            }}
-                                            renderInput={(props) => <TextField {...props} />}
-                                        />
-
-                                    </LocalizationProvider>
-                                </Grid>
-                                <Grid item xs={6} mb={2}>
-                                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                                        <DatePicker label="End Date"
-                                            value={selectedDate2}
-                                            onChange={(newValue) => {
-                                                handleDateChange2(newValue);
-                                                values.endDate = moment(newValue).format("YYYY-MM-DD");
-                                            }}
-                                            renderInput={(props) => <TextField {...props} />}
-                                        />
-                                    </LocalizationProvider>
-                                </Grid>
-                            </Grid>
+                            <TextField
+                                margin="dense"
+                                id="url"
+                                label="Location URL"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={values.url}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.url && Boolean(errors.url)}
+                                helperText={touched.url && errors.url}
+                            />
+                            {
+                                values?.url && (
+                                <iframe src={values?.url}
+                                        width="500" height="300"  loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade">
+                                    
+                                    </iframe>
+                                )
+                            }
+                            <br></br>
+                            <Button variant="contained" component="label">  Upload Image
+                                <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
+                            </Button>
+                            <div >
+      <div>
+                                    {file &&
+                                        (<img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />)}
+      </div>
+      
+    </div>
+                       
+                           
                             <DialogActions>
                                 <ButtonGroup>
-                                    <Button onClick={handleClose}>
+                                    <Button onClick={handleClose} color="primary">
                                         Cancel
                                     </Button>
                                     <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
-                                        {selectedDiscount ? "Update" : "Create"}
+                                        {selectedDiscount ? "Update" : "Add"}
                                     </Button>
                                 </ButtonGroup>
                             </DialogActions>

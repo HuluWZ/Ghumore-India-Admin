@@ -2,7 +2,7 @@ import React from 'react'
 import PageView from '../../components/PageView'
 import ConfirmModal from "../../components/ConfirmModal";
 import LoadingComponent from "../../components/LoadingComponent";
-import { useLocation } from '../../hooks/useLocation';
+import { useCustomer } from '../../hooks/useCustomer';
 import { AddCircleRounded } from "@mui/icons-material";
 
 import LocationsView from "./CustomerList";
@@ -12,11 +12,11 @@ import { Alert } from '@mui/material';
 
 
 const Locations = () => {
-    const { customers, isLoading, isError, deleteCustomerMutation, createCustomerMutation, updateCustomerMutation } = useLocation();
+    const { customers, isLoading, isError, deleteCustomerMutation, createCustomerMutation, updateCustomerMutation } = useCustomer();
     const [selectedCustomer, setSelectedCustomer] = React.useState<any>(null);
     const [open, setOpen] = React.useState(false);
     const [openConfirm, setOpenConfirm] = React.useState(false);
-    console.log(" Loc ",customers)
+    console.log(" All Location = : ",customers)
     if (isLoading) return (
         <PageView
             title="Location"
@@ -29,13 +29,13 @@ const Locations = () => {
                         setOpen(true)
                         setSelectedCustomer(null)
                     },
-                    // otherProps: {
-                    //     sx: {
-                    //         ml: "auto",
-                    //         fontSize: "10px",
-                    //     },
-                    //     variant: "contained",
-                    // },
+                    otherProps: {
+                        sx: {
+                            ml: "auto",
+                            fontSize: "10px",
+                        },
+                        variant: "contained",
+                    },
                 },
             ]}
         >

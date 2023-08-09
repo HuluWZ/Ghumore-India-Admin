@@ -16,12 +16,12 @@ const Sales = () => {
     
     if (isLoading) return (
         <PageView
-            title="Sales"
+            title="Category"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Sales",
+                    label: "Add Category",
                     handler: () => {
                         setOpen(true)
                         setSelectedSales(null)
@@ -42,7 +42,7 @@ const Sales = () => {
 
     if (error) return (
         <PageView
-            title="Sales"
+            title="Category"
             backPath="/app/dashboard"
             actions={[
                 {
@@ -68,12 +68,12 @@ const Sales = () => {
 
     return (
         <PageView
-            title="Sales"
+            title="Category"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Sales",
+                    label: "Add Category",
                     handler: () => {
                         setOpen(true)
                         setSelectedSales(null)
@@ -95,8 +95,8 @@ const Sales = () => {
                     deleteSaleMutation(selectedSales.id)
                     setOpenConfirm(false)
                 }}
-                title="Delete Sales"
-                description="Are you sure you want to delete this sales?"
+                title="Delete Category"
+                description="Are you sure you want to delete this category?"
                 confirmText="Delete"
                 cancelText="Cancel"
             />

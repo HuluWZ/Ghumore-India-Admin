@@ -7,7 +7,6 @@ const api = `${url}location/`;
 const token = localStorage.getItem("token") || "";
 
 //get all categories
-console.log(" URL ",`${api}`,token);
 export const getCustomers = async () => {
     console.log(" Get  Data Location ",`${api}get`)
     const response = await axios.get(`${api}get`, {
@@ -16,7 +15,7 @@ export const getCustomers = async () => {
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(" Locations ", response.data)
+    console.log(" ALL Locations ", response.data)
     return response.data;
 }
 

@@ -15,7 +15,7 @@ export const DiscountProvider = ({ children }: any) => {
     const { mutate: createDiscountMutation } = useMutation(createDiscount, {
         onSuccess: () => {
             queryClient.invalidateQueries('discounts');
-            showNotification('Discount created successfully', 'success')
+            showNotification('Location Added successfully', 'success')
         },
         
         onError: (error: any) => {
@@ -28,7 +28,7 @@ export const DiscountProvider = ({ children }: any) => {
         useMutation((data: any) => updateDiscount(data.id, data), {
             onSuccess: () => {
                 queryClient.invalidateQueries('discounts');
-                showNotification('Discount updated successfully', 'success')
+                showNotification('Location updated successfully', 'success')
             },
 
             onError: (error: any) => {
@@ -39,7 +39,7 @@ export const DiscountProvider = ({ children }: any) => {
     const { mutate: deleteDiscountMutation } = useMutation(deleteDiscount, {
         onSuccess: () => {
             queryClient.invalidateQueries('discounts');
-            showNotification('Discount deleted successfully', 'success')
+            showNotification('Location deleted successfully', 'success')
         },
 
         onError: (error: any) => {

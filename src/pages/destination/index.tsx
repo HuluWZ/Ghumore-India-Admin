@@ -16,7 +16,7 @@ const Locations = () => {
     const [selectedCustomer, setSelectedCustomer] = React.useState<any>(null);
     const [open, setOpen] = React.useState(false);
     const [openConfirm, setOpenConfirm] = React.useState(false);
-    console.log(" Category : ",customers)
+    console.log(" All Category : ",customers)
     if (isLoading) return (
         <PageView
             title="Category"

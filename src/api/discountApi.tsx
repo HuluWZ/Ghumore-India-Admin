@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Base URL for the request
 const api = import.meta.env.VITE_API_URL;
-const url = `${api}discount`;
+const url = `${api}location`;
 
 //Heders for the request
 const token = localStorage.getItem("token");
@@ -29,6 +29,7 @@ export const getDiscount = async (id: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
+        console.log(" Get All Location from Discount ", response);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -37,12 +38,20 @@ export const getDiscount = async (id: string) => {
 
 export const createDiscount = async (data: any) => {
     try {
-        const response = await axios.post(`${url}/create`, data, {
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("image",data.image);
+        formData.append("url",data.url);
+        formData.append("parent",data?.parent);
+
+        console.log(" Location Values ",data,formData)
+        const response = await axios.post(`${url}/create`, formData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
             }
         });
+        console.log(" Create Location ", response);
         return response.data;
     } catch (error) {
         console.error(error);

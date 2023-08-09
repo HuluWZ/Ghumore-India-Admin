@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getSales, createSale, updateSale, deleteSale, getAllReport, getReportByWeek } from "../../api/salesApi";
+import { getSales, createSale, updateSale, deleteSale, getAllReport } from "../../api/salesApi";
 import { useNotification } from '../useNotification';
 
 export const SalesContext = createContext({} as any);
@@ -12,15 +12,13 @@ export const SalesProvider = ({ children }: any) => {
 
     const { data: sales, isLoading, error } = useQuery('sales', getSales);
 
-    const { data: report } = useQuery('report', getAllReport);
 
-    const { data: reportByWeek } = useQuery('reportByWeek', getReportByWeek);
 
 
     const { mutate: createSaleMutation } = useMutation(createSale, {
         onSuccess: () => {
             queryClient.invalidateQueries('sales');
-            showNotification('Sale created successfully', 'success')
+            showNotification('Category Added successfully', 'success')
         },
 
         onError: (error: any) => {
@@ -33,7 +31,7 @@ export const SalesProvider = ({ children }: any) => {
         useMutation((data: any) => updateSale(data.id, data), {
             onSuccess: () => {
                 queryClient.invalidateQueries('sales');
-                showNotification('Sale updated successfully', 'success')
+                showNotification('Category updated successfully', 'success')
             },
 
             onError: (error: any) => {
@@ -45,7 +43,7 @@ export const SalesProvider = ({ children }: any) => {
     const { mutate: deleteSaleMutation } = useMutation(deleteSale, {
         onSuccess: () => {
             queryClient.invalidateQueries('sales');
-            showNotification('Sale deleted successfully', 'success')
+            showNotification('Category deleted successfully', 'success')
         },
 
         onError: (error: any) => {
@@ -57,10 +55,8 @@ export const SalesProvider = ({ children }: any) => {
 
     const value = {
         sales,
-        report,
         isLoading,
         error,
-        reportByWeek,
         createSaleMutation,
         updateSaleMutation,
         deleteSaleMutation,

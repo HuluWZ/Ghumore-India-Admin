@@ -1,163 +1,162 @@
-import React, { useState } from 'react';
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Grid, Button, Container, Chip, Divider, styled, Typography, Tooltip } from "@mui/material";
-import moment from "moment";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Discount from '@mui/icons-material/Discount';
-
+import {
+    DataGrid,
+    GridColDef,
+    GridToolbar,
+} from "@mui/x-data-grid";
 import {
     DeleteForeverRounded,
     EditRounded,
     VisibilityRounded,
 } from "@mui/icons-material";
-
-const DiscountRate = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(0.5, 1),
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: theme.typography.fontWeightMedium,
-    fontSize: theme.typography.pxToRem(10),
-    lineHeight: 1,
-    height: 22,
-    minWidth: 12,
-}));
+import {
+    Box,
+    IconButton,
+    Container,
+    Typography,
+    Avatar,
+    Paper,
+    CardMedia,
+} from "@mui/material";
+import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import moment from "moment";
+import { useTheme } from "@mui/material";
 
 
-export default function DiscountView({
+const DiscountView=({
     discounts,
     setSelectedDiscount,
     setOpen,
     setOpenConfirm,
     selectedDiscount
-}: any) {
+}: any) => {
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const theme = useTheme();
 
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const columns: GridColDef[] = [
 
-
+        {
+        field: "id",
+        headerName: "ID",
+        minWidth:100
+        },
+        {
+            field: "name",
+            headerName: "Name",
+            minWidth: 150,
+        },
+        {
+            field: "parent",
+            headerName: "Parent",
+            minWidth: 200
+        },
+        {
+            field: "image",
+            headerName: "Image",
+            minWidth: 300,
+            renderCell: (params: any) => {
+                const { row } = params;
+                return <>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                     <CardMedia
+                        component="img"
+                        height="100"
+                        image={row?.image}
+                        alt="green iguana"
+                        
+                     />
+        
+                 </Box>
+                </>
+            }
+        },
+        {
+            field: "url",
+            headerName: "URL",
+            minWidth: 200,
+            renderCell: (params: any) => {
+                const { row } = params;
+                return <>
+                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                        <a href={row?.url} target="_blank">View On Map</a>
+                         {/* <iframe src={row?.url}  width="400" height="300" loading="lazy"> 
+                        </iframe>  */}
+                    </Box>
+                </>
+            }
+        },
+        {
+            field: "createdAt",
+            headerName: "Created At",
+            minWidth: 100,
+            renderCell: (params: any) => {
+                const { row } = params;
+                const { createdAt } = row;
+                return (
+                    <>
+                        <Typography variant="body1">
+                            {moment(createdAt).format("DD MMM YYYY")}
+                        </Typography>
+                    </>
+                );
+            },
+        },
+        {
+            field: "actions",
+            headerName: "Actions",
+            minWidth: 100,
+            renderCell: (params: any) => {
+                const { row } = params;
+                return (
+                    <>
+                        <IconButton
+                            onClick={() => {
+                                setSelectedDiscount(row);
+                                setOpen(true);
+                            }}
+                        >
+                            <EditRounded />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => {
+                                setSelectedDiscount(row);
+                                setOpenConfirm(true);
+                            }}
+                        >
+                            <DeleteForeverRounded />
+                        </IconButton>
+                    </>
+                );
+            },
+        },
+    ];
+   
+ const rows = discounts?.location?.map((item: any) => {
+        return {
+            id: item?._id,
+            name: item?.name,
+            parent: item?.parent?item?.parent:"-",
+            image: item?.image,
+            url: item?.url,
+            createdAt: item?.createdAt
+        };
+ });
+    
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-                {discounts.discount.map((discount: any) => (
-                    <Grid item xs={12} sm={6} md={4} lg={4} key={discount._id}>
-                        <Tooltip title={discount.description} placement="top">
-                            <Card
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    justifyContent: "space-between",
-                                    width: "95%",
-                                    "&:hover": {
-                                        opacity: 1,
-                                        transition: "all 0.3s ease-in-out",
-                                        shadow: 3,
-                                        cursor: "pointer",
-                                    },
-
-                                }}
-                                variant="outlined"
-                                aria-label="discount-card"
-                            >
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={discount.product.image}
-                                    alt={discount.product.name}
-                                    sx={{
-                                        "&:hover": {
-                                            opacity: 0.9,
-                                            transition: "all 0.3s ease-in-out",
-                                            shadow: 3,
-                                            cursor: "pointer",
-                                        },
-                                    }}
-                                />
-                                <CardHeader
-                                    action={
-                                        <IconButton
-                                            aria-label="settings"
-                                            onClick={handleClick}
-                                            id="discount-menu"
-                                            aria-controls="discount-menu"
-                                            aria-haspopup="true"
-                                            aria-expanded={open ? "true" : undefined}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                    }
-                                    title={discount.name}
-                                    subheader={
-                                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: 10 }}>
-                                            created  {moment(discount.createdAt).fromNow()}
-                                        </Typography>
-                                    }
-                                />
-                                <Divider />
-                                <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                                    <Chip label={`${moment(discount.startDate).format("MMM Do YY")} --- ${moment(discount.endDate).format("MMM Do YY")}`} />
-                                    <DiscountRate>
-                                        <Discount sx={{ fontSize: 14 }} />
-                                        {discount.rate}% OFF
-                                    </DiscountRate>
-                                </CardContent>
-                                <CardActions disableSpacing>
-                                    <Menu
-                                        id="discount-menu"
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        MenuListProps={{
-                                            "aria-labelledby": "discount-menu",
-                                        }}
-
-                                        sx={{
-                                            "& .MuiPaper-root": {
-                                                boxShadow: "none",
-                                            },
-                                        }}
-                                    >
-                                        <MenuItem
-                                            onClick={() => {
-                                                console.log(discount._id);
-                                                setSelectedDiscount(discount);
-                                                setOpen(true);
-                                            }}
-                                        >
-                                            <EditRounded sx={{ color: "primary.main" }} />
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={() => {
-                                                setSelectedDiscount(discount);
-                                                setOpenConfirm(true);
-                                            }}
-                                        >
-                                            <DeleteForeverRounded sx={{ color: "error.main" }} />
-                                        </MenuItem>
-                                    </Menu>
-                                </CardActions>
-                            </Card>
-                        </Tooltip>
-                    </Grid>
-                ))}
-            </Grid>
+        <Container maxWidth="lg">
+            <Paper sx={{ background: theme.palette.background.paper }} variant="outlined">
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    pagination
+                    autoHeight
+                    checkboxSelection
+                    components={{
+                        Toolbar: GridToolbar,
+                    }}
+                />
+            </Paper>
         </Container>
     );
 }
+export default DiscountView;

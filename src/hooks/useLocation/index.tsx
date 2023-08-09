@@ -12,7 +12,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { data: customers, isLoading: customersLoading, isError, error } = useQuery('customers', getCustomers);
     console.log(" Locations  All ",customers)
-    const { mutate: createCustomerMutation, isLoading: createCustomerLoading } = useMutation(createCustomer, {
+    const { mutate: createCustomerMutation } = useMutation(createCustomer, {
         onSuccess: () => {
             showNotification(' Location Added  successfully', 'success');
             queryClient.invalidateQueries('customers');
@@ -24,7 +24,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     });
 
-    const { mutate: updateCustomerMutation, isLoading: updateCustomerLoading } = useMutation((data: any) => updateCustomer(data.id, data), {
+    const { mutate: updateCustomerMutation } = useMutation((data: any) => updateCustomer(data.id, data), {
         onSuccess: () => {
             showNotification('Location updated successfully', 'success');
             queryClient.invalidateQueries('customers');
@@ -35,7 +35,7 @@ export const CustomerProvider = ({ children }: any) => {
         }
     });
 
-    const { mutate: deleteCustomerMutation, isLoading: deleteCustomerLoading } = useMutation(deleteCustomer, {
+    const { mutate: deleteCustomerMutation } = useMutation(deleteCustomer, {
         onSuccess: () => {
             showNotification('Location Deleted  successfully', 'success');
             queryClient.invalidateQueries('customers');
@@ -52,15 +52,12 @@ export const CustomerProvider = ({ children }: any) => {
                 customersLoading,
                 isError,
                 createCustomerMutation,
-                createCustomerLoading,
                 updateCustomerMutation,
-                updateCustomerLoading,
                 deleteCustomerMutation,
-                deleteCustomerLoading,
             }
     
     
-    return ( <CustomerContext.Provider value={value}>{children}</CustomerContext.Provider>)
+    return <CustomerContext.Provider value={value}>{children}</CustomerContext.Provider>
     
 };
 

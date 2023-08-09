@@ -77,8 +77,8 @@ const FormDialog = ({
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        values.role = Role
-                        // console.log(" Data ", values," Selected Product ",selectedProduct);
+                        // values.role = Role
+                        console.log(" Data  Values : ", values);
                         if (selectedProduct) {
                             setSubmitting(true);
                             handleEdit({
@@ -213,7 +213,7 @@ const FormDialog = ({
                                         select
                                         variant="standard"
                                         value={values.role}
-                                        onChange={handleRoleChange}
+                                        onChange={handleChange}
                                         onBlur={handleBlur}
                                         error={Boolean(touched.role && errors.role)}
                                         helperText={touched.role && errors.role}

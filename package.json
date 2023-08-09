@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "vite",
-    "dev": "vite --port 4000",
+    "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

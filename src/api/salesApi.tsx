@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = import.meta.env.VITE_API_URL;
-const url = `${api}sales`;
+const url = `${api}category`;
 
 const token = localStorage.getItem("token");
 
@@ -13,20 +13,23 @@ export const getSales = async () => {
         },
     });
 
-    if (response.status !== 200) {
-        throw new Error(response.data.message);
-    }
-
+    console.log(" All sales ", response?.data);
     return response.data;
 };
 
 export const createSale = async (data: any) => {
-    const response = await axios.post(`${url}/create`, data, {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("image",data.image);
+    formData.append("parent",data?.parent);
+    console.log(" Category Values ",data)
+    const response = await axios.post(`${url}/create`, formData, {
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
     });
+    console.log(" Category Response ",response)
     return response.data;
 }
 

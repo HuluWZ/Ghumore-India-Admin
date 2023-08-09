@@ -1,8 +1,8 @@
 import axios from "axios";
 
-
 const api = import.meta.env.VITE_API_URL;
 const url = `${api}auth`;
+const token = localStorage.getItem("token") || "";
 
 export const register = async (data: any) => {
     try {
@@ -26,7 +26,11 @@ export const login = async (data: any) => {
 
 export const logout = async () => {
     try {
-        const response = await axios.get(`${url}/logout`);
+        const response = await axios.get(`${url}/logout`, {
+            headers: {
+                "Authorization": `${token}`,
+                "Content-Type":"application/json"
+        }});
         return response.data;
     } catch (error) {
         console.log(error);

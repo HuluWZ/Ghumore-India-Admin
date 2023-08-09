@@ -58,6 +58,12 @@ const OrderDetail = () => {
     }
 
     const order = data
+    const parseDa = (a: Date) => new Date(a); 
+    var startDate = parseDa(order?.booking?.activity?.startDate)
+    var endDate = parseDa(order?.booking?.activity?.endDate)
+    var lastBookingDate = parseDa(order?.booking?.activity?.lastBookingDate)
+    // const startDate = parseDa(order?.booking?.activity?.startDate)
+    console.log(" All Date ",startDate, endDate, lastBookingDate);
 
     return (
         <PageView title="Booking Detail" backPath="/orders">
@@ -189,6 +195,109 @@ const OrderDetail = () => {
                             </CardContent>
                         </Card>
                     </Grid>
+                                        <Grid item xs={12} md={12} lg={12}>
+                        <Card sx={{ height: '100%' }} variant="outlined">
+                            <CardHeader
+                                title="Activity Details"
+                                subheader={
+                                    <Typography variant="body1" color="secondary" gutterBottom>
+                                        {/* {order.items.length} Items */}
+                                    </Typography>
+                                }
+                            />
+                            <Divider />
+                            <CardContent>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Activity  Name
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                       {order.booking.activity.name }  
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Booking Description
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                        {order.booking.activity.description }  
+
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Activity Images
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                        
+                                        {order?.booking &&
+                                                            order?.booking?.activity?.images.map((imageUrl: any, index: number) => (
+                                 <a href={imageUrl} target="_blank">
+                                   <img src={imageUrl} alt={`Image ${index + 1}`} width="200" height="200"  loading="lazy"/>
+                                 </a>
+                            )) || " No Image "}
+                        {/* </div>       */}
+
+                            </Typography>
+                                        </Grid>
+
+                                         <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Activity Location
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                                                           
+                                <a href={order.booking.activity?.location?.image} target="_blank">
+                                   <img src={order.booking.activity?.location?.image} alt={`Image `} loading="lazy" width="200" height="200" />
+                                 </a>
+
+
+                                            </Typography>
+                                            <Typography>
+                                                <iframe
+                                                    title={order.booking.activity?.location?.name}
+                                                    width="250"
+                                                    height="250"
+                                                    frameBorder="0"
+                                                    style={{ border: 0 }}
+                                                    src={order.booking.activity?.location?.url}
+                                                    allowFullScreen
+                                                >    
+                                                </iframe>
+
+                                            
+
+                                            </Typography>
+                                            <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                {order.booking.activity?.location?.name}  
+
+                                            </Typography >
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Activity Category
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                                                           
+                                <a href={order.booking.activity?.category?.image} target="_blank">
+                                   <img src={order.booking.activity?.category?.image} alt={`Image `}  loading="lazy" width="200" height="200" />
+                                 </a>
+
+
+                                            </Typography>
+                                            <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom>
+                                {order.booking.activity?.category?.name}  
+
+                                            </Typography >
+                                    </Grid>
+                                    
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                     <Grid item xs={12} md={12} lg={12}>
                         <Card sx={{ height: '100%' }} variant="outlined">
                             <CardHeader
@@ -252,6 +361,46 @@ const OrderDetail = () => {
                                         </Typography>
                                         <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
                                             {  order.booking.pickupLocation || "-" }   
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Travel   Start Date
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
+                                            {startDate.toISOString().split("T")[0]}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Travel   End Date
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
+                                            {endDate.toISOString().split("T")[0]}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Travel   Last Booking Date
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
+                                            {lastBookingDate.toISOString().split("T")[0]}
+                                        </Typography>
+                                        </Grid>
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Booking  Total Capacity
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
+                                            {order?.booking?.activity?.totalCapacity}
+                                        </Typography>
+                                    </Grid>    
+                                    <Grid item xs={12} md={6} lg={6}>
+                                        <Typography variant="body1" color={theme.palette.mode === 'dark' ? 'textPrimary' : 'textSecondary'} gutterBottom>
+                                            Booking  Available Spot
+                                        </Typography>
+                                        <Typography variant="body2" color="textPrimary" fontWeight={"bold"} gutterBottom >
+                                            {order?.booking?.activity?.availableSpot}
                                         </Typography>
                                     </Grid>
                                     </Grid>

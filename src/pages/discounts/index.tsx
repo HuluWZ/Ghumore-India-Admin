@@ -15,14 +15,15 @@ const Discounts = () => {
     const [open, setOpen] = React.useState(false);
     const [openConfirm, setOpenConfirm] = React.useState(false);
 
+    console.log(" All Available  Discounts ", discounts);
     if (isLoading) return (
         <PageView
-            title="Discounts"
+            title="Location"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Discount",
+                    label: "Add Location",
                     handler: () => {
                         setOpen(true)
                         setSelectedDiscount(null)
@@ -43,12 +44,12 @@ const Discounts = () => {
 
     if (error) return (
         <PageView
-            title="Discounts"
+            title="Location"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Discount",
+                    label: "Add Location",
                     handler: () => {
                         setOpen(true)
                         setSelectedDiscount(null)
@@ -69,12 +70,12 @@ const Discounts = () => {
 
     return (
         <PageView
-            title="Discounts"
+            title="Location"
             backPath="/app/dashboard"
             actions={[
                 {
                     icon: <AddCircleRounded style={{ fontSize: "1rem" }} />,
-                    label: "Add Discount",
+                    label: "Add Location",
                     handler: () => {
                         setOpen(true)
                         setSelectedDiscount(null)
@@ -89,11 +90,7 @@ const Discounts = () => {
                 },
             ]}
         >
-            {(discounts.discount.length === 0) &&
-                <Container maxWidth="sm">
-                    <Alert severity="info">No discounts found</Alert>
-                </Container>
-            }
+
             
             <FormDialog
                 open={open}
@@ -107,12 +104,12 @@ const Discounts = () => {
                 open={openConfirm}
                 handleClose={() => setOpenConfirm(false)}
                 handleConfirm={() => {
-                    deleteDiscountMutation(selectedDiscount._id)
+                    deleteDiscountMutation(selectedDiscount?.id)
                     setOpenConfirm(false)
                 }}
 
-                title="Delete Discount"
-                description="Are you sure you want to delete this discount?"
+                title="Delete Location"
+                description="Are you sure you want to delete this location?"
                 confirmText="Delete"
                 cancelText="Cancel"
             />

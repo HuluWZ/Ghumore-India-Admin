@@ -14,7 +14,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { mutate: createCustomerMutation, isLoading: createCustomerLoading } = useMutation(createCustomer, {
         onSuccess: () => {
-            showNotification('Create customer successfully', 'success');
+            showNotification('Create Location successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 
@@ -26,7 +26,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { mutate: updateCustomerMutation, isLoading: updateCustomerLoading } = useMutation((data: any) => updateCustomer(data.id, data), {
         onSuccess: () => {
-            showNotification('Update customer successfully', 'success');
+            showNotification('Update Location successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 
@@ -37,7 +37,7 @@ export const CustomerProvider = ({ children }: any) => {
 
     const { mutate: deleteCustomerMutation, isLoading: deleteCustomerLoading } = useMutation(deleteCustomer, {
         onSuccess: () => {
-            showNotification('Delete customer successfully', 'success');
+            showNotification('Delete Location successfully', 'success');
             queryClient.invalidateQueries('customers');
         },
 

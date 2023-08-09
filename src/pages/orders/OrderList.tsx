@@ -58,13 +58,23 @@ const OrdersView = ({
   const columns: GridColDef[] = [
     
     {
-      field: "activity",
-      headerName: "Activity",
-      minWidth: 150,
+      field: "id",
+      headerName: "Booking Ref",
+      minWidth: 50,
     },
     {
       field: "name",
       headerName: "Name",
+      minWidth: 150
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      minWidth: 150
+    },
+    {
+      field: "location",
+      headerName: "Location",
       minWidth: 150
     },
     {
@@ -184,8 +194,10 @@ const OrdersView = ({
   const rows: GridRowsProp = orders?.booking?.map((item: any) => {
     return {
       id: item._id,
-      activity:item.activity.substr(-12),
+      activity:item?.activity?.id?.substr(-12),
       name: item.option?.name,
+      location: item?.activity?.location?.name,
+      category: item?.activity?.category?.name,
       unitPrice: item.option?.unitPrice,
       time: item.option?.time,
       email: item.email,

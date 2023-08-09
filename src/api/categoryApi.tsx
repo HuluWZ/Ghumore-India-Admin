@@ -17,12 +17,39 @@ const token = localStorage.getItem("token") || "";
 };
 
 export const createCategory = async (data: any) => {
+    const formData = new FormData();
+    console.log(" Images ",data.options)
+    formData.append("name", data.name)
+    formData.append("description",data.description)
+    formData.append("category",data.category)
+    formData.append("location",data.location)
+    formData.append("duration",data.duration)
+    formData.append("durationType",data.durationType)
+    formData.append("startDate",data.startDate)
+    formData.append("endDate",data.endDate)
+    formData.append("lastBookingDate",data.lastBookingDate)
+    formData.append("organizer",data.organizer)
+    formData.append("price",data.price)
+    formData.append("rating",data.rating)
+    formData.append("totalCapacity", data.totalCapacity)
+    data?.images?.map((image:any) => {
+        formData.append("images", image);
+    })
+    data?.options.forEach((option:any, index:number) => {
+      formData.append(`options[${index}][name]`, option.name);
+      formData.append(`options[${index}][description]`, option.description);
+      formData.append(`options[${index}][unitPrice]`, option.unitPrice);
+      
+      option.time.forEach((time:any, timeIndex:number) => {
+        formData.append(`options[${index}][time][${timeIndex}]`, time);
+      });
+    });
+
+
     console.log(" Activity data = ", data)
-    console.log(" Options ",data.options)
-    let newData = data.images
-    const response = await axios.post(`${url}activity/create`, data, {
+    // console.log(" Options ",data.options)
+    const response = await axios.post(`${url}activity/create`, formData, {
         headers: {
-            // "Content-Type":"application/json"
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${token}`
         },

@@ -1,6 +1,5 @@
 import {
     DataGrid,
-    GridRowsProp,
     GridColDef,
     GridToolbar,
 } from "@mui/x-data-grid";
@@ -9,9 +8,18 @@ import {
     EditRounded,
     VisibilityRounded,
 } from "@mui/icons-material";
-import { Box, IconButton, Container, Grid, Typography, Chip, Paper } from "@mui/material";
-import { useTheme } from "@mui/system";
-import { Link } from "react-router-dom";
+import {
+    Box,
+    IconButton,
+    Container,
+    Typography,
+    Avatar,
+    Paper,
+    CardMedia,
+} from "@mui/material";
+import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import moment from "moment";
+import { useTheme } from "@mui/material";
 
 
 const SalesView = ({
@@ -20,87 +28,71 @@ const SalesView = ({
     setOpen,
     setOpenConfirm,
 }: any) => {
+    console.log(" All Sales ", sales);
     const theme = useTheme();
-    const columns: GridColDef[] = [
+       const columns: GridColDef[] = [
+
+        {
+        field: "id",
+        headerName: "ID",
+        minWidth:100
+        },
         {
             field: "name",
             headerName: "Name",
-            width: 150,
+            minWidth: 150,
         },
         {
-            field: "customer",
-            headerName: "Customer",
-            width: 150,
+            field: "parent",
+            headerName: "Parent",
+            minWidth: 150
         },
         {
-            field: "description",
-            headerName: "Description",
-            width: 150,
-        },
-        {
-            field: "salesDate",
-            headerName: "Sales Date",
-            width: 150,
-            renderCell: (params: any) => {
-                return <>{new Date(params.value).toLocaleDateString()}</>;
-            },
-        },
-        {
-            field: "items",
-            headerName: "Items & Quantity",
+            field: "image",
+            headerName: "Image",
             minWidth: 300,
             renderCell: (params: any) => {
+                const { row } = params;
+                return <>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                     <CardMedia
+                        component="img"
+                        height="200"
+                        image={row?.image}
+                        alt="green iguana"
+                     />
+        
+                 </Box>
+                </>
+            }
+        },
+        {
+            field: "createdAt",
+            headerName: "Created At",
+            minWidth: 100,
+            renderCell: (params: any) => {
+                const { row } = params;
+                const { createdAt } = row;
                 return (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                        }}
-                    >
-                        {params.value.map((item: any) => {
-                            return (
-                                <Box
-                                    key={item._id}
-                                    sx={{
-                                        display: "block",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Chip label={item.quantity} />
-                                        <Typography variant="body2" ml={1}>
-                                            {item.product.name}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            );
-                        })}
-                    </Box>
+                    <>
+                        <Typography variant="body1">
+                            {moment(createdAt).format("DD MMM YYYY")}
+                        </Typography>
+                    </>
                 );
             },
         },
         {
             field: "actions",
             headerName: "Actions",
-            width: 150,
+            minWidth: 100,
             renderCell: (params: any) => {
+                const { row } = params;
                 return (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-evenly",
-                        }}
-                    >
+                    <>
                         <IconButton
                             onClick={() => {
-                                setSelectedSales(params.row);
+                                setSelectedSales(row);
                                 setOpen(true);
                             }}
                         >
@@ -108,33 +100,25 @@ const SalesView = ({
                         </IconButton>
                         <IconButton
                             onClick={() => {
-                                setSelectedSales(params.row);
+                                setSelectedSales(row);
                                 setOpenConfirm(true);
                             }}
                         >
                             <DeleteForeverRounded />
                         </IconButton>
-                        <IconButton
-                            component={Link}
-                            to={`${params.row.id}`}
-                        >
-                            <VisibilityRounded />
-                        </IconButton>
-
-                    </Box>
+                    </>
                 );
             },
         },
     ];
 
-    const rows: GridRowsProp = sales.sales.map((item: any) => {
+const rows = sales?.category?.map((item: any) => {
         return {
-            id: item._id,
-            name: item.name,
-            customer: item.customer.fullName,
-            description: item.description,
-            salesDate: item.salesDate,
-            items: item.items,
+            id: item?._id,
+            name: item?.name,
+            parent: item?.parent?item?.parent:"-",
+            image: item?.image,
+            createdAt: item?.createdAt
         };
     });
 

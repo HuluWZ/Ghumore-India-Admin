@@ -229,15 +229,15 @@ const FormDialog = ({
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
-                            // values.location = location;
-                            // values.category = category;
+                            values.location = location;
+                            values.category = category;
                             values.images = selectedImages;
                             values.description = content;
                             values.options = options;
                             values.durationType = durationType
-                            const data = formatData(values);
-                            console.log(" Value Added : ",values,data)
-                            handleAdd(data);
+                            // const data = formatData(values);
+                            console.log(" Value Added : ",values)
+                            handleAdd(values);
                             setSelectedImages([])
                         }
                         resetForm();
@@ -273,18 +273,24 @@ const FormDialog = ({
                             />
                             <br></br>
                             <h4>Description</h4>
-                            <ReactQuill theme="snow"  id="content" value={content} onChange={handleEditorChange}  modules={modules} formats={formats} />
+                            {selectedCategory ?
+                                (<ReactQuill theme="snow" id="content" value={values.description} onChange={handleChange} modules={modules} formats={formats} />) :
+                                (<ReactQuill theme="snow" id="content" value={content} onChange={handleEditorChange} modules={modules} formats={formats} />
+)}
                             <br></br>
                             
 
         <FormControl   sx={{ m: 1, minWidth: 200 }} margin='normal'>
                     
-       <InputLabel> Select Location </InputLabel>
+          <InputLabel> Select Location </InputLabel>
+       
         <Select value={location} onChange={handleLocationChange} label="Select Location">
-          {locations.map((location) => (
+           {locations.map((location) => (
             <MenuItem key={location._id} value={location._id}>{location.name}</MenuItem>
-          ))}
+           ))}
         </Select>
+                                    
+
         </FormControl>
 
  <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
