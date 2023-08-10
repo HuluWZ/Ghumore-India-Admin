@@ -18,9 +18,10 @@ const token = localStorage.getItem("token") || "";
 
 export const createCategory = async (data: any) => {
     const formData = new FormData();
-    console.log(" Images ",data.options)
+    console.log(" Data  ",data)
     formData.append("name", data.name)
-    formData.append("description",data.description)
+    formData.append("description", data.description)
+    formData.append("overview",data.overview)
     formData.append("category",data.category)
     formData.append("location",data.location)
     formData.append("duration",data.duration)
@@ -46,7 +47,7 @@ export const createCategory = async (data: any) => {
     });
 
 
-    console.log(" Activity data = ", data)
+    console.log(" Activity data = ", formData)
     // console.log(" Options ",data.options)
     const response = await axios.post(`${url}activity/create`, formData, {
         headers: {

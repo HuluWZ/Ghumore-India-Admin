@@ -18,6 +18,7 @@ import { useCallback, useMemo } from "react";
 import axios from "axios";
 import { Select,InputLabel } from '@material-ui/core';
 import FormControl from '@mui/material/FormControl';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 const durationTypeList = ["days","hours","months","years"]
 const api = import.meta.env.VITE_API_URL;
@@ -88,9 +89,10 @@ const FormDialog = ({
     setSelectedCategory,
 }: FormDialogProps) => {
     const initialValues = {
-        // id: selectedCategory ? selectedCategory.id : "",
+        id: selectedCategory?.id || "",
         name: selectedCategory ? selectedCategory.name : "",
         description: selectedCategory ? selectedCategory.description : "",
+        overview: selectedCategory ? selectedCategory.overview : "",
         price: selectedCategory ? selectedCategory.price : "",
         totalCapacity: selectedCategory ? selectedCategory.totalCapacity : "",
         duration: selectedCategory ? selectedCategory.duration : "",
@@ -108,6 +110,7 @@ const FormDialog = ({
     const [formData, setFormData] = useState({
         name:  "",
         description: "",
+        overview: "",
         price: "",
         totalCapacity:  "",
         duration:  "",
@@ -159,6 +162,7 @@ const FormDialog = ({
     }, []);
     const [options, setOptions] = useState<Option[]>([{ name: '', description: '', unitPrice: '', time: [''] }]);
     const [content, setContent] = useState('');
+    const [description,setDescription] = useState("")
     const [durationType, setDurationType] = useState('');
 
     const [location, setLocation] = useState('')
@@ -180,13 +184,14 @@ const FormDialog = ({
     const handleCategoryChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
         setCategory(event.target.value as string);
     }
-
+     const handleDescChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
+        setDescription(event.target.value as string);
+    }
     const handleAddOption = () => {
      const newOptions:Option[] = [...options, { name: '', description: '', unitPrice: '', time:[''] }];
      setOptions(newOptions);
     }
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-
         const { name, value } = event.target;
         var newOptions:Option[] = [...options];
         // console.log( " Name - ",event.target.name," Value - ",event.target.value);
@@ -225,20 +230,24 @@ const FormDialog = ({
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
+                        console.log(" Selected Category ", selectedCategory);
                         if (selectedCategory) {
+                            console.log(" Trial : ",category,location, selectedImages,content,options,durationType)
+                            console.log(" Submitted Values ",values)
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
                             values.location = location;
                             values.category = category;
                             values.images = selectedImages;
-                            values.description = content;
+                            values.overview = content;
                             values.options = options;
                             values.durationType = durationType
                             // const data = formatData(values);
                             console.log(" Value Added : ",values)
                             handleAdd(values);
                             setSelectedImages([])
+                            setContent('')
                         }
                         resetForm();
                         setSubmitting(false);
@@ -271,10 +280,27 @@ const FormDialog = ({
                                     marginBottom:2
                                 }}
                             />
+                             <TextField
+                                autoFocus
+                                id="description"
+                                label="Description"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={values.description}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(touched.description && errors.description)}
+                                helperText={touched.description && errors.description}
+                                sx={{
+                                    marginBottom:2
+                                }}
+                            />
+                        
                             <br></br>
-                            <h4>Description</h4>
+                            <h4>Overview</h4>
                             {selectedCategory ?
-                                (<ReactQuill theme="snow" id="content" value={values.description} onChange={handleChange} modules={modules} formats={formats} />) :
+                                (<ReactQuill theme="snow" id="content" value={values?.overview} onChange={handleChange} modules={modules} formats={formats} />) :
                                 (<ReactQuill theme="snow" id="content" value={content} onChange={handleEditorChange} modules={modules} formats={formats} />
 )}
                             <br></br>
@@ -484,14 +510,15 @@ const FormDialog = ({
             label="Last Booking Date"
             type="date"
             value={values.lastBookingDate}
-           required={true}
-                                // variant="standard"
-                                onChange={handleChange}
+            required={true}
+            // variant="standard"
+            onChange={handleChange}
          />
-                            <Button variant="contained" component="label">  Upload Images
-                                <Input type="file" style={{ display: 'none' }}  inputProps={{ multiple: true,required:true }} onChange={handleFileSelect}   />
-                            </Button>
-                            <div >
+            <Button variant="contained" component="label">  Upload Images
+             <Input type="file" style={{ display: 'none' }}      // Change to true if you want to allow multiple files
+               inputProps={{ multiple: true,required:true }} onChange={handleFileSelect}   />
+            </Button>
+        <div >
       <div>
         {selectedImages?.map((file) => (
         <img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />
