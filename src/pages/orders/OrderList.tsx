@@ -194,7 +194,6 @@ const OrdersView = ({
   const rows: GridRowsProp = orders?.booking?.map((item: any) => {
     return {
       id: item._id,
-      activity:item?.activity?.id?.substr(-12),
       name: item.option?.name,
       location: item?.activity?.location?.name,
       category: item?.activity?.category?.name,
