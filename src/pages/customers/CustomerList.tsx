@@ -28,90 +28,59 @@ const CustomersView = ({
     setOpenConfirm,
 }: any) => {
     const theme = useTheme();
+    console.log(" All Coupons ", customers);
     const columns: GridColDef[] = [
+       {
+            field: "id",
+            headerName: "ID",
+            minWidth: 100
+        },
         {
-            field: "fullName",
-            headerName: "Customer",
+            field: "code",
+            headerName: "Coupon Code",
+            minWidth: 150
+        },
+        {
+            field: "rate",
+            headerName: "Rate",
+            minWidth: 100,
+        },
+        {
+            field: "startDate",
+            headerName: "Start Date",
+            minWidth: 100,
+            renderCell: (params: any) => {
+                const { row } = params;
+                const { startDate } = row;
+                return (
+                    <>
+                        <Typography variant="body1">
+                            {moment(startDate).format("DD MMM YYYY")}
+                        </Typography>
+                    </>
+                );
+            },
+        },
+        {
+            field: "endDate",
+            headerName: "End Date",
             minWidth: 150,
             renderCell: (params: any) => {
                 const { row } = params;
-                const { fullName, phoneNumber } = row;
+                const { endDate } = row;
                 return (
                     <>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Avatar
-                                sx={{
-                                    width: "40px",
-                                    height: "40px",
-                                    marginRight: "10px",
-                                    backgroundColor: theme.palette.primary.main,
-                                    fontSize: "0.9rem",
-                                    borderRadius: "20%",
-                                }}
-                            >
-                                {fullName.charAt(0).toUpperCase() +
-                                    fullName.charAt(fullName.indexOf(" ") + 1).toUpperCase()}
-                            </Avatar>
-                            <Typography variant="body1">{fullName}</Typography>
-                        </Box>
+                        <Typography variant="body1">
+                            {moment(endDate).format("DD MMM YYYY")}
+                        </Typography>
                     </>
                 );
             },
         },
         {
-            field: "phoneNumber",
-            headerName: "Phone Number",
-            minWidth: 200,
-            renderCell: (params: any) => {
-                const { row } = params;
-                const { phoneNumber } = row;
-                return (
-                    <>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <LocalPhoneOutlinedIcon
-                                sx={{
-                                    fontSize: "1.5rem",
-                                    marginRight: "10px",
-                                }}
-                            />
-                            <Typography variant="body1">{phoneNumber}</Typography>
-                        </Box>
-                    </>
-                );
-            },
-        },
-        {
-            field: "email",
-            headerName: "Email",
-            minWidth: 100,
-        },
-        {
-            field: "address",
-            headerName: "Address",
-            minWidth: 100,
-        },
-        {
-            field: "city",
-            headerName: "City",
-            minWidth: 100,
-
-        },
-        {
-            field: "paymentMethod",
-            headerName: "Payment Method",
-            minWidth: 100,
+            field: "status",
+            headerName: "Status",
+            minWidth: 150,
         },
         {
             field: "createdAt",
@@ -139,6 +108,8 @@ const CustomersView = ({
                     <>
                         <IconButton
                             onClick={() => {
+                                row.startDate =row?.startDate.split("T")[0] 
+                                row.endDate =row?.endDate.split("T")[0] 
                                 setSelectedCustomer(row);
                                 setOpen(true);
                             }}
@@ -160,15 +131,15 @@ const CustomersView = ({
     ];
 
 
-    const rows = customers?.customer?.map((item: any) => {
+    const rows = customers?.discounts?.map((item: any) => {
         return {
             id: item?._id,
-            fullName: item?.fullName,
-            phoneNumber: item?.phoneNumber,
-            email: item?.email,
-            address: item?.address,
-            city: item?.city,
-            paymentMethod: item?.paymentMethod,
+            code: item?.code,
+            rate: item?.rate,
+            startDate: item?.startDate,
+            endDate: item?.endDate,
+            status: item?.status,
+            createdAt: item?.createdAt,
         };
     });
     return (

@@ -13,7 +13,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Input } from '@material-ui/core';
 import { useDropzone } from "react-dropzone";
-// import styles from "../styles/Home.module.css";
 import { useCallback, useMemo } from "react";
 import axios from "axios";
 import { Select,InputLabel } from '@material-ui/core';
@@ -131,8 +130,6 @@ const FormDialog = ({
         price: Yup.string().required("Required"),
         totalCapacity: Yup.string().required("Required"),
         duration: Yup.string().required("Required"),
-        // location: Yup.string().required("Required"),
-        // category: Yup.string().required("Required"),
         organizer: Yup.string().required("Required"),
         startDate: Yup.date().required("Required"),
         endDate: Yup.date().required("Required"),

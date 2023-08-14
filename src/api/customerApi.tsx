@@ -1,35 +1,35 @@
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
-const api = `${url}location/`;
+const api = `${url}discount/`;
 
 
 const token = localStorage.getItem("token") || "";
 
 //get all categories
 export const getCustomers = async () => {
-    // console.log(" Get  Data Customer ",`${api}get`)
-
+    console.log(" Get Discount : ",`${api}get`)
     const response = await axios.get(`${api}get`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(" All  Customers ", response.data)
+    console.log(" All  Discount ", response.data)
     return response.data;
 }
 
 //create category
 export const createCustomer = async (data: any) => {
+    delete data?.id;
     const response = await axios.post(`${api}create`, data, {
         headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
     });
-
-    return response.data;
+     console.log(" Create Response ",response,data)
+    return response?.data;
 }
 
 

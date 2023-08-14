@@ -49,6 +49,11 @@ const listAdminItems = [
         name: 'Category',
         icon: <ParaglidingIcon />,
         path: '/app/category',
+    },
+     {
+        name: 'Discount',
+        icon: <DiscountIcon />,
+        path: '/app/customers',
     }
 ];
 

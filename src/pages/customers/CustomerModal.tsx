@@ -7,15 +7,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Button, ButtonGroup, MenuItem } from "@mui/material";
-
+import DatePicker from '@mui/lab/DatePicker';
+import { useState } from 'react';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const validationSchema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
-    phoneNumber: Yup.string().required("Phone Number is required"),
-    email: Yup.string().email("Email is invalid").required("Email is required"),
-    address: Yup.string().required("Address is required"),
-    city: Yup.string().required("City is required"),
-    paymentMethod: Yup.string().required("Payment Method is required"),
+    code: Yup.string().required("Coupon Code is required"),
+    rate: Yup.number().required("Coupon Rate is required"),
+    // startDate: Yup.date().required("Start Date is required"),
+    // endDate: Yup.date().required("End Date is required"),
 });
 
 
@@ -27,33 +28,44 @@ type FormDialogProps = {
     selectedCustomer: any;
     setCustomer: any;
 }
-
-
-
+  
 const FormDialog = (props: FormDialogProps) => {
     const { open, handleClose, handleAdd, handleUpdate, selectedCustomer, setCustomer } = props;
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const handleStartDateChange = (date:any) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date:any) => {
+    setEndDate(date);
+  };
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">
-                {selectedCustomer ? "Update Customer" : "Add Customer"}
+                {selectedCustomer ? "Update Coupon" : "Add Coupon"}
             </DialogTitle>
             <DialogContent>
                 <Formik
                     initialValues={{
                         id: selectedCustomer?.id || "",
-                        fullName: selectedCustomer?.fullName || "",
-                        phoneNumber: selectedCustomer?.phoneNumber || "",
-                        email: selectedCustomer?.email || "",
-                        address: selectedCustomer?.address || "",
-                        city: selectedCustomer?.city || "",
-                        paymentMethod: selectedCustomer?.paymentMethod || "",
+                        code: selectedCustomer?.code || "",
+                        rate: selectedCustomer?.rate || "",
+                        startDate: selectedCustomer?.startDate || "",
+                        endDate: selectedCustomer?.endDate || "",
+                        status: selectedCustomer?.status || "",
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
+                        console.log(" Selected ",selectedCustomer)
                         if (selectedCustomer) {
                             handleUpdate(values);
                         } else {
+                            // values.startDate = startDate;
+                            // values.endDate = endDate;
+                            console.log(" Discount Data = ",values)
                             handleAdd(values);
                         }
                         setSubmitting(false);
@@ -74,95 +86,84 @@ const FormDialog = (props: FormDialogProps) => {
                             <TextField
                                 autoFocus
                                 margin="dense"
-                                id="fullName"
-                                name="fullName"
-                                label="Full Name"
+                                id="code"
+                                name="code"
+                                label="Coupon Code"
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                value={values.fullName}
+                                value={values.code}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={touched.fullName && Boolean(errors.fullName)}
-                                helperText={touched.fullName && errors.fullName}
+                                error={touched.code && Boolean(errors.code)}
+                                helperText={touched.code && errors.code}
                             />
                             <TextField
                                 margin="dense"
-                                id="phoneNumber"
-                                name="phoneNumber"
-                                label="Phone Number"
+                                id="rate"
+                                name="rate"
+                                label="Coupon Rate"
+                                type="number"
+                                fullWidth
+                                variant="standard"
+                                value={values.rate}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.rate && Boolean(errors.rate)}
+                                helperText={touched.rate && errors.rate}
+                            /><br></br>
+                            <TextField
+            id="startDate"
+            label="Start Date"
+            type="date"
+            value={values.startDate}
+            required={true}
+            variant="filled"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={Boolean(touched.startDate && errors.startDate)}
+            helperText={touched.startDate && errors.startDate}
+            sx={{
+                    marginBottom:2
+                }}
+        />
+                          <br></br>      
+
+        <TextField
+            id="endDate"
+            label="End Date"
+            type="date"
+            value={values.endDate}
+           required={true}
+                                variant="filled"
+                                onChange={handleChange}
+                                 onBlur={handleBlur}
+                                error={Boolean(touched.endDate && errors.endDate)}
+                                helperText={touched.endDate && errors.endDate}
+                                sx={{
+                                    marginBottom:2
+                                }}
+         />
+                       
+
+                            <TextField
+                                margin="dense"
+                                id="status"
+                                name="status"
+                                label="Status"
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                value={values.phoneNumber}
+                                value={values.status}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={touched.phoneNumber && Boolean(errors.phoneNumber)}
-                                helperText={touched.phoneNumber && errors.phoneNumber}
-                            />
-                            <TextField
-                                margin="dense"
-                                id="email"
-                                name="email"
-                                label="Email Address"
-                                type="email"
-                                fullWidth
-                                variant="standard"
-                                value={values.email}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={touched.email && Boolean(errors.email)}
-                                helperText={touched.email && errors.email}
-                            />
-                            <TextField
-                                margin="dense"
-                                id="address"
-                                name="address"
-                                label="Address"
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                                value={values.address}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={touched.address && Boolean(errors.address)}
-                                helperText={touched.address && errors.address}
-                            />
-                            <TextField
-                                margin="dense"
-                                id="city"
-                                name="city"
-                                label="City"
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                                value={values.city}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={touched.city && Boolean(errors.city)}
-                                helperText={touched.city && errors.city}
-                            />
-                            {/* paymentMethod will be a dropdown  */}
-                            <TextField
-                                margin="dense"
-                                id="paymentMethod"
-                                name="paymentMethod"
-                                label="Payment Method"
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                                value={values.paymentMethod}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={touched.paymentMethod && Boolean(errors.paymentMethod)}
-                                helperText={touched.paymentMethod && errors.paymentMethod}
+                                error={touched.status && Boolean(errors.status)}
+                                helperText={touched.status && errors.status}
                                 select
                             >
-                                <MenuItem value="Cash">Cash</MenuItem>
-                                <MenuItem value="Credit">Credit</MenuItem>
-                                <MenuItem value="Check">Check</MenuItem>
-                                <MenuItem value="Transfer">Transfer</MenuItem>
-                                <MenuItem value="TeleBirr">TeleBirr</MenuItem>
+                                <MenuItem value="Pending">Pending</MenuItem>
+                                <MenuItem value="Approved">Approved</MenuItem>
+                                <MenuItem value="Suspended">Suspended</MenuItem>
                             </TextField>
                             <DialogActions>
                                 <ButtonGroup>

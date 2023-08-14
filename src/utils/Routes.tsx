@@ -54,11 +54,6 @@ const RoutesComponent = () => {
                 <Route path="app" element={<DashboardContent />}>
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="categories" element={<CategoriesList />} />
-                    <Route path="customers" element={<CustomerList />} />
-                    {/* <Route path="sales" element={<Outlet />}>
-                        <Route index element={<SaleList />} />
-                        <Route path=":id" element={<SalesDetail />} />
-                    </Route> */}
                     <Route path="products" element={<Outlet />}>
                         <Route index element={<ProductList />} />
                         <Route path=":id" element={<ProductsDetail />} />
@@ -71,6 +66,7 @@ const RoutesComponent = () => {
 
                     <Route path="location" element={<DiscountList />} />
                     <Route path="category" element={<SaleList />} />
+                    <Route path="customers" element={<CustomerList />} />
 
                     <Route path="reports" element={<Outlet />}>
                         <Route index element={<ReportList />} />
