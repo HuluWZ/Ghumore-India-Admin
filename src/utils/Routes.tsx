@@ -20,7 +20,7 @@ import CategoriesList from '../pages/categories';
 import ProductList from '../pages/products';
 import ProductsDetail from '../pages/products/ProductDetail';
 
-import DiscountList from '../pages/discounts';
+import ReviewList from '../pages/review';
 
 import OrderList from '../pages/orders';
 import OrderDetail from '../pages/orders/OrderDetail';
@@ -29,7 +29,7 @@ import LocationList from '../pages/locations';
 import DestinationList from '../pages/destination';
 
 import SaleList from '../pages/sales';
-// import SalesDetail from '../pages/sales/SalesDetail';
+import DiscountList from '../pages/discounts';
 
 import ReportList from '../pages/report';
 import OrderReport from '../pages/report/OrderReport';
@@ -53,20 +53,19 @@ const RoutesComponent = () => {
                 <Route path="/" element={<Navigate to="/app/dashboard" />} />
                 <Route path="app" element={<DashboardContent />}>
                     <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="categories" element={<CategoriesList />} />
-                    <Route path="products" element={<Outlet />}>
+                    <Route path="activity" element={<CategoriesList />} />
+                    <Route path="users" element={<Outlet />}>
                         <Route index element={<ProductList />} />
                         <Route path=":id" element={<ProductsDetail />} />
                     </Route>
-                    {/* <Route path="discounts" element={<DiscountList />} /> */}
-                    <Route path="orders" element={<Outlet />}>
+                    <Route path="bookings" element={<Outlet />}>
                         <Route index element={<OrderList />} />
                         <Route path=":id" element={<OrderDetail />} />
                     </Route>
-
-                    <Route path="location" element={<DiscountList />} />
+                    <Route path="locations" element={<DiscountList />} />
                     <Route path="category" element={<SaleList />} />
-                    <Route path="customers" element={<CustomerList />} />
+                    <Route path="discount" element={<CustomerList />} />
+                    <Route path="review" element={<ReviewList />} />
 
                     <Route path="reports" element={<Outlet />}>
                         <Route index element={<ReportList />} />

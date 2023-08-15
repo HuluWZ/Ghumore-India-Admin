@@ -28,7 +28,7 @@ const Dashboard = () => {
   const { report, reportByWeek, isLoading } = useSales();
 
 
-  console.log(" Welcoem Dash ",customers,locations)
+  console.log(" Welcome Dash ")
   var totalSalesMoneyFormat = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "INR",

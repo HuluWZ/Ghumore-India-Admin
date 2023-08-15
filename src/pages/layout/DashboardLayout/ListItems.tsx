@@ -19,6 +19,7 @@ import List from "@mui/material/List";
 import { Typography, colors } from "@mui/material";
 import ExploreIcon from '@mui/icons-material/Explore';
 import ParaglidingIcon from '@mui/icons-material/Paragliding';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 const listAdminItems = [
     {
         name: 'Dashboard',
@@ -28,22 +29,22 @@ const listAdminItems = [
     {
         name: 'Activity',
         icon: <CategoryIcon />,
-        path: '/app/categories',
+        path: '/app/activity',
     },
     {
         name: 'Users',
         icon: <PeopleIcon />,
-        path: '/app/products',
+        path: '/app/users',
     },
     {
         name: 'Bookings',
         icon: <AddShoppingCartIcon />,
-        path: '/app/orders',
+        path: '/app/bookings',
     },
     {
         name: 'Location',
         icon: <ExploreIcon />,
-        path: '/app/location',
+        path: '/app/locations',
     },
     {
         name: 'Category',
@@ -53,7 +54,12 @@ const listAdminItems = [
      {
         name: 'Discount',
         icon: <DiscountIcon />,
-        path: '/app/customers',
+        path: '/app/discount',
+    },
+    {
+        name: 'Review',
+        icon: <ReviewsIcon />,
+        path: '/app/review',
     }
 ];
 

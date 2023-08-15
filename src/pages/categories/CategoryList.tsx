@@ -47,13 +47,14 @@ const CategoriesView = ({
           durationType: item.durationType,
           location: item.location,
           organizer: item.organizer,
-          rating: item.rating,
+          rating: item.averageRating || 0,
+          totalReview : item.totalReview || 0,
           images: item.images,
         };
   });
 
   const columns: GridColDef[] = [
-    {
+           {
             field: "name",
             headerName: "Name",
             width: 150,
@@ -102,7 +103,12 @@ const CategoriesView = ({
         },
          {
             field: "rating",
-            headerName: "Rating",
+            headerName: "AVG Rating",
+            width: 150,
+    },
+        {
+            field: "totalReview",
+            headerName: "Total Review",
             width: 150,
         },
     {
@@ -111,7 +117,7 @@ const CategoriesView = ({
       width: 400,
       renderCell: (params: any) => (
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          {params.row.images.map((current: any) => (
+          {params?.row?.images.map((current: any) => (
           <CardMedia
             component="img"
             height="100"

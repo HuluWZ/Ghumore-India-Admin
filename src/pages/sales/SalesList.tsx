@@ -33,9 +33,9 @@ const SalesView = ({
        const columns: GridColDef[] = [
 
         {
-        field: "id",
-        headerName: "ID",
-        minWidth:100
+           field: "id",
+           headerName: "ID",
+           minWidth:100
         },
         {
             field: "name",
