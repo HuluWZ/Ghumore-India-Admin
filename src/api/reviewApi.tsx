@@ -10,7 +10,8 @@ const token = localStorage.getItem("token") || "";
             "Content-Type": "application/json",
         },
     });
-    console.log(" Review - " , response.data)
+    //console.log(" Review - " , response.data)
+    console.log("review");
     return response.data;
 };
 

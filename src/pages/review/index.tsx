@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageView from "../../components/PageView";
-import { useCategory } from "../../hooks/useReview";
+import { useReview } from "../../hooks/useReview";
 import LoadingComponent from "../../components/LoadingComponent";
 import CategoriesView from "./CategoryList";
 import FormDialog from "./CategoryModal";
@@ -9,7 +9,7 @@ import ConfirmModal from "../../components/ConfirmModal";
 
 
 const Categories = () => {
-  const { categories, isLoading, error, deleteCategoryMutation, createCategoryMutation, updateCategoryMutation } = useCategory();
+  const { categories, isLoading, error, deleteCategoryMutation, createCategoryMutation, updateCategoryMutation } = useReview();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);

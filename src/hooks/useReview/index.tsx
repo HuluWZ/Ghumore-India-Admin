@@ -3,19 +3,19 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { getCategories, createCategory, deleteCategory, updateCategory } from '../../api/reviewApi';
 import { useNotification } from '../useNotification';
 
-export const CategoryContext = createContext({} as any);
+export const ReviewContext = createContext({} as any);
 
 
-export const CategoryProvider = ({ children }: any) => {
+export const ReviewProvider = ({ children }: any) => {
     const queryClient = useQueryClient();
     const { showNotification } = useNotification()
 
     const { data: categories, isLoading, error } = useQuery('categories', getCategories);
-
+    console.log("all reviews");
     const { mutate: createCategoryMutation } = useMutation(createCategory, {
         onSuccess: () => {
             queryClient.invalidateQueries('categories');
-            showNotification('Feedback created successfully', 'success')
+            showNotification('Activity created successfully', 'success')
         },
 
         onError: (error: any) => {
@@ -28,7 +28,7 @@ export const CategoryProvider = ({ children }: any) => {
         useMutation((data: any) => updateCategory(data.id, data), {
             onSuccess: () => {
                 queryClient.invalidateQueries('categories');
-                showNotification('Feedback updated successfully', 'success')
+                showNotification('Activity updated successfully', 'success')
             },
 
             onError: (error: any) => {
@@ -40,7 +40,7 @@ export const CategoryProvider = ({ children }: any) => {
     const { mutate: deleteCategoryMutation } = useMutation(deleteCategory, {
         onSuccess: () => {
             queryClient.invalidateQueries('categories');
-            showNotification('Feedback deleted successfully', 'success')
+            showNotification('Activity deleted successfully', 'success')
         },
 
         onError: (error: any) => {
@@ -57,7 +57,7 @@ export const CategoryProvider = ({ children }: any) => {
         deleteCategoryMutation,
     };
 
-    return <CategoryContext.Provider value={value}>{children}</CategoryContext.Provider>;
+    return <ReviewContext.Provider value={value}>{children}</ReviewContext.Provider>;
 };
 
-export const useCategory = () => useContext(CategoryContext);
+export const useReview = () => useContext(ReviewContext);

@@ -16,6 +16,7 @@ const Categories = () => {
 
 
 
+
   if (isLoading) return (
     <PageView
       title="Activities"

@@ -15,6 +15,7 @@ import { DiscountProvider } from "../hooks/useDiscount";
 import { OrderProvider } from "../hooks/useOrder";
 import { CustomerProvider } from "../hooks/useCustomer";
 import { SalesProvider } from "../hooks/useSales";
+import { ReviewProvider } from "../hooks/useReview";
 
 
 
@@ -47,7 +48,9 @@ function CombinedComponent() {
                                             <OrderProvider>
                                                 <CustomerProvider>
                                                     <SalesProvider>
+                                                        <ReviewProvider>
                                                         <RoutesComponent />
+                                                        </ReviewProvider>
                                                     </SalesProvider>
                                                 </CustomerProvider>
                                             </OrderProvider>
