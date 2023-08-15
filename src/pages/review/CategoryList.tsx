@@ -30,7 +30,7 @@ const CategoriesView = ({
   const theme = useTheme();
 
   const navigate = useNavigate();
-  console.log(" Categories Data ", categories);
+  
   const rows: GridRowsProp = categories?.feedback?.map((item: any) => {
     return {
           id: item._id,

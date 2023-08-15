@@ -10,9 +10,9 @@ export const ReviewProvider = ({ children }: any) => {
     const queryClient = useQueryClient();
     const { showNotification } = useNotification()
 
-    const { data: categories, isLoading, error } = useQuery('categories', getCategories);
-    console.log("all reviews");
-    const { mutate: createCategoryMutation } = useMutation(createCategory, {
+    const { data: reviews, isLoading, error } = useQuery('reviews', getCategories);
+    console.log("all reviews api level", reviews);
+    const { mutate: createReviewMutation } = useMutation(createCategory, {
         onSuccess: () => {
             queryClient.invalidateQueries('categories');
             showNotification('Activity created successfully', 'success')
@@ -24,7 +24,7 @@ export const ReviewProvider = ({ children }: any) => {
 
     });
 
-    const { mutate: updateCategoryMutation } =
+    const { mutate: updateReviewMutation } =
         useMutation((data: any) => updateCategory(data.id, data), {
             onSuccess: () => {
                 queryClient.invalidateQueries('categories');
@@ -37,7 +37,7 @@ export const ReviewProvider = ({ children }: any) => {
         });
 
 
-    const { mutate: deleteCategoryMutation } = useMutation(deleteCategory, {
+    const { mutate: deleteReviewMutation } = useMutation(deleteCategory, {
         onSuccess: () => {
             queryClient.invalidateQueries('categories');
             showNotification('Activity deleted successfully', 'success')
@@ -49,12 +49,12 @@ export const ReviewProvider = ({ children }: any) => {
     });
 
     const value = {
-        categories,
+        reviews,
         isLoading,
         error,
-        createCategoryMutation,
-        updateCategoryMutation,
-        deleteCategoryMutation,
+        createReviewMutation,
+        updateReviewMutation,
+        deleteReviewMutation,
     };
 
     return <ReviewContext.Provider value={value}>{children}</ReviewContext.Provider>;

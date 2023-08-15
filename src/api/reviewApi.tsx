@@ -2,7 +2,7 @@ import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
 const token = localStorage.getItem("token") || "";
 
-  //impliment crud operations
+
   export const getCategories = async () => {
     console.log(" Get All Review - ")
     const response = await axios.get(`${url}feedback/get`, {
@@ -10,8 +10,8 @@ const token = localStorage.getItem("token") || "";
             "Content-Type": "application/json",
         },
     });
-    //console.log(" Review - " , response.data)
-    console.log("review");
+    console.log(" Review api- " , response.data)
+  
     return response.data;
 };
 

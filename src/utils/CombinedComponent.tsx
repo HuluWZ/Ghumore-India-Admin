@@ -42,21 +42,25 @@ function CombinedComponent() {
                     <NotificationProvider>
                         <AuthProvider>
                             {/* <OrgProvider> */}
+                           
                                 <CategoryProvider>
+                                
                                     <ProductProvider>
                                         <DiscountProvider>
                                             <OrderProvider>
                                                 <CustomerProvider>
                                                     <SalesProvider>
-                                                        <ReviewProvider>
+                                                        {/* <ReviewProvider> */}
                                                         <RoutesComponent />
-                                                        </ReviewProvider>
+                                                        {/* </ReviewProvider> */}
                                                     </SalesProvider>
                                                 </CustomerProvider>
                                             </OrderProvider>
                                         </DiscountProvider>
-                                    </ProductProvider>
+                                     </ProductProvider>
+                                     
                                 </CategoryProvider>
+                               
                             {/* </OrgProvider> */}
                         </AuthProvider>
                     </NotificationProvider>

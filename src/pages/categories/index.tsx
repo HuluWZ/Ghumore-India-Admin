@@ -15,7 +15,7 @@ const Categories = () => {
   const [openConfirm, setOpenConfirm] = useState(false);
 
 
-
+console.log("print", categories)
 
   if (isLoading) return (
     <PageView
@@ -93,9 +93,7 @@ const Categories = () => {
         setSelectedCategory={setSelectedCategory}
         setOpen={setOpen}
         setOpenConfirm={setOpenConfirm}
-      />
-
-      
+      /> 
     </PageView>
   );
 };
