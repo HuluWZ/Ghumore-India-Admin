@@ -5,6 +5,7 @@
   "type": "module",
   "author": "Hulunlante Worku",
   "license": "MIT",
+  "proxy":"https://ghumore-travel.onrender.com",
   "description": "Ghumore-India Admin",
   "engines": {
     "node": "18.12.1",
