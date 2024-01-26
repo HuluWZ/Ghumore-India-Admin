@@ -67,11 +67,13 @@ const FormDialog = (props: FormDialogProps) => {
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (selectedSales) {
+                            values.image = file
+                            console.log(" Update Category ",values)
                             handleUpdate(values);
                         } else {
                             values.image = file
                             parent ?? values.parent;
-                            console.log(" Submited Values ",values)
+                            console.log(" Submitted Values ",values)
                             handleAdd(values);
                             SetFile(null)
                         }
@@ -114,17 +116,36 @@ const FormDialog = (props: FormDialogProps) => {
                 </Select>
             </FormControl>
 
-                            <br></br>
-                            <Button variant="contained" component="label">  Upload Image
-                                <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
-                            </Button>
+                                {selectedSales ?
+                                                                <div>
+                                      <Button variant="contained" component="label">  Upload Image
+                                      <Input type="file"  style={{ display: 'none' }}   onChange={handleFileSelect}   />
+                                    </Button>
                             <div >
-      <div>
+                               <div>
                                     {file &&
                                         (<img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />)}
-      </div>
+                                    
+                                </div>
+
+                                </div>
+                                </div>
+ :
+                                    <div>
+                                      <Button variant="contained" component="label">  Upload Image
+                                      <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
+                                    </Button>
+                            <div >
+                               <div>
+                                    {file &&
+                                        (<img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />)}
+                                    
+                                </div>
+
+                                </div>
+                                </div>
+                                }
       
-    </div>
                        
                            
                             <DialogActions>

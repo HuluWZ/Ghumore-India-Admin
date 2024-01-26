@@ -69,6 +69,7 @@ const FormDialog = (props: FormDialogProps) => {
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (selectedDiscount) {
+                            values.image = file
                             handleUpdate(values);
                         } else {
                             values.image = file
@@ -139,17 +140,37 @@ const FormDialog = (props: FormDialogProps) => {
                                 )
                             }
                             <br></br>
-                            <Button variant="contained" component="label">  Upload Image
-                                <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
-                            </Button>
+                       
+                        {selectedDiscount ?
+                                                                <div>
+                                      <Button variant="contained" component="label">  Upload Image
+                                      <Input type="file"  style={{ display: 'none' }}   onChange={handleFileSelect}   />
+                                    </Button>
                             <div >
-      <div>
+                               <div>
                                     {file &&
                                         (<img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />)}
-      </div>
+                                    
+                                </div>
+
+                                </div>
+                                </div>
+ :
+                                    <div>
+                                      <Button variant="contained" component="label">  Upload Image
+                                      <Input type="file"  style={{ display: 'none' }}  inputProps={{ required:true }} onChange={handleFileSelect}   />
+                                    </Button>
+                            <div >
+                               <div>
+                                    {file &&
+                                        (<img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />)}
+                                    
+                                </div>
+
+                                </div>
+                                </div>
+                                }
       
-    </div>
-                       
                            
                             <DialogActions>
                                 <ButtonGroup>
