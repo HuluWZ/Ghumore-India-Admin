@@ -73,9 +73,64 @@ export const getCategoryById = async (id: any) => {
 
 //update category
 export const updateCategory = async (id: any, data: any) => {
-    const response = await axios.put(`${url}activity/update/${id}`, data, {
+    const formData = new FormData();
+    var isImage = ""
+    console.log(" Data  ", data)
+    if (data.name) {
+        formData.append("name", data.name)
+    }
+    if (data.description) {
+        formData.append("description", data.description)
+    }
+        if (data.overview) {
+        formData.append("overview", data.overview)
+    }
+    if (data.category) {
+        formData.append("category", data.category)
+    }
+        if (data.location) {
+        formData.append("location", data.location)
+    }
+    if (data.duration) {
+        formData.append("duration", data.duration)
+    }
+    if (data.durationType) {
+        formData.append("durationType", data.durationType)
+    }
+    if (data.startDate) {
+        formData.append("startDate", data.startDate)
+    }
+    if (data.endDate) {
+        formData.append("endDate", data.endDate)
+    }
+
+    if (data.lastBookingDate) {
+        formData.append("lastBookingDate", data.lastBookingDate)
+    }
+        if (data.organizer) {
+        formData.append("organizer", data.organizer)
+    }
+    if (data.price) {
+        formData.append("price", data.price)
+    }
+        if (data.rating) {
+        formData.append("rating", data.rating)
+    }
+
+    if (data.totalCapacity) {
+        formData.append("totalCapacity", data.totalCapacity)
+    }
+
+    if (data.images.length > 0) {
+        isImage ="image"
+        data?.images?.map((image:any) => {
+            formData.append("images", image);
+        })
+    }
+
+    const response = await axios.put(`${url}activity/update/${id}`, formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type":isImage? "multipart/form-data":"application/json",
             Authorization: `Bearer ${token}`,
         },
     });

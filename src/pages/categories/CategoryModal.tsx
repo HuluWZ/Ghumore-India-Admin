@@ -231,9 +231,29 @@ const FormDialog = ({
                         console.log(" Selected Category ", selectedCategory);
                         if (selectedCategory) {
                             console.log(" Trial : ",category,location, selectedImages,content,options,durationType)
-                            console.log(" Submitted Values ",values)
+                            console.log(" Submitted Values ", values)
+                            if (selectedImages) {
+                                values.images = selectedImages;
+                            }
+                            if (location) {
+                                 values.location = location;
+                            }
+                            if (category) {
+                                 values.category = category;
+                            }
+                            if (content) {
+                                 values.overview = content;
+                            }
+                            if (options) {
+                                 values.options = options;
+                            }
+                            if (durationType) {
+                                 values.durationType = durationType;
+                            }
+                            
                             handleEdit(values);
                             setSelectedCategory(null);
+                            setSelectedImages([])
                         } else {
                             values.location = location;
                             values.category = category;
@@ -246,6 +266,10 @@ const FormDialog = ({
                             handleAdd(values);
                             setSelectedImages([])
                             setContent('')
+                            setOptions([])
+                            setCategory('')
+                            setLocation('')
+
                         }
                         resetForm();
                         setSubmitting(false);
