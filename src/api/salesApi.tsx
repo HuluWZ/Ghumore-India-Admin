@@ -1,4 +1,5 @@
 import axios from "axios";
+import { log } from "console";
 
 const api = import.meta.env.VITE_API_URL;
 const url = `${api}category`;
@@ -20,8 +21,10 @@ export const getSales = async () => {
 export const createSale = async (data: any) => {
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("image",data.image);
-    formData.append("parent",data?.parent);
+    formData.append("image", data.image);
+    if (data.parent) {
+        formData.append("parent",data.parent);
+    }
     console.log(" Category Values ",data)
     const response = await axios.post(`${url}/create`, formData, {
         headers: {
@@ -34,12 +37,30 @@ export const createSale = async (data: any) => {
 }
 
 export const updateSale = async (id: string, data: any) => {
-    const response = await axios.put(`${url}/update/${id}`, data, {
+    const formData = new FormData();
+    var isImage = ""
+    if (data.parent.length > 4) {
+        formData.append("parent",data.parent);
+    }
+
+        if (data.name) {
+        formData.append("name",data.name);
+    }
+
+        if (data.image) {
+            formData.append("image", data.image);
+            isImage = "Image"
+    }
+    
+    console.log(" Category Data :",formData,isImage)
+
+    const response = await axios.put(`${url}/update/${id}`, formData, {
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": isImage ? "multipart/form-data" :"application/json",
             Authorization: `Bearer ${token}`,
         },
     });
+        console.log(" Category Response ",response)
     return response.data;
 }
 

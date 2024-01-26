@@ -95,10 +95,3 @@ export const deleteCategory = async (id: any) => {
     return response.data;
 }
 
-
-
-
-
-
-
-
