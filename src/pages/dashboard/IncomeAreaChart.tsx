@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-
+import moment from 'moment';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 import { Card, CardContent, CardHeader, colors } from '@mui/material';
@@ -38,7 +38,7 @@ const IncomeAreaChart = ({ reportByWeek }: any) => {
 
     const [series, setSeries] = useState([
         {
-            name: 'Sales',
+            name: 'Booking',
             data: []
         }
     ]);
@@ -49,11 +49,12 @@ const IncomeAreaChart = ({ reportByWeek }: any) => {
 
     useEffect(() => {
         if (reportByWeek) {
-            const data: any = Object.values(reportByWeek)
-            const categories: any = Object.keys(reportByWeek)
+            console.log(" Report Week ",reportByWeek)
+            const data: any = reportByWeek?.booking
+            const categories: any = reportByWeek?.days?.map((date:string) => moment(date).format('MMM DD  YYYY')) || [];
             setSeries([
                 {
-                    name: 'Sales',
+                    name: 'Booking',
                     data: data
                 }
             ])
@@ -112,7 +113,7 @@ const IncomeAreaChart = ({ reportByWeek }: any) => {
             }
 
         }}>
-            <CardHeader title="Weekly Sales" />
+            <CardHeader title="Weekly Booking" />
             <CardContent>
                 <ReactApexChart
                     options={options}
