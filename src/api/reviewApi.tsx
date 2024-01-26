@@ -16,11 +16,12 @@ const token = localStorage.getItem("token") || "";
 };
 
 export const createCategory = async (data: any) => {
-    // console.log(" Options ",data.options)
+    delete data.id
+    console.log("  Feedback Data  ",data)
     const response = await axios.post(`${url}feedback/create`, data, {
         headers: {
             "Content-Type": "application/json",
-            // "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`
         },
     });
     console.log(" feedback Upload response = ", response)
