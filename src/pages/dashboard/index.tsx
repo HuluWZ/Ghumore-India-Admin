@@ -36,7 +36,7 @@ const Dashboard = () => {
   
   
   if (isLoading) {
-    console.log(" Orders oading L- ",orders);
+    console.log(" Report By Week L- ",reportByWeek);
 
     <PageView title="Dashboard">
       <LoadingComponent />
@@ -49,7 +49,7 @@ const Dashboard = () => {
     </PageView>
   }
   
-  console.log(" Orders - ",orders);
+  console.log(" Report - ",reportByWeek);
 
 
   return (
@@ -82,7 +82,7 @@ const Dashboard = () => {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12} md={8}>
-                <IncomeAreaChart reportByWeek={reportByWeek?.weeklySalesReport || []} />
+                <IncomeAreaChart reportByWeek={reportByWeek || []} />
               </Grid>
               <Grid item xs={12} md={4}>
                 <Grid container spacing={gridSpacing}>
