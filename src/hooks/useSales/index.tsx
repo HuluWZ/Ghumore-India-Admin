@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getSales, createSale, updateSale, deleteSale, getAllReport } from "../../api/salesApi";
+import { getSales, createSale, updateSale, deleteSale, getAllReport , getReportByWeek } from "../../api/salesApi";
 import { useNotification } from '../useNotification';
 
 export const SalesContext = createContext({} as any);
@@ -10,9 +10,9 @@ export const SalesProvider = ({ children }: any) => {
     const queryClient = useQueryClient();
     const { showNotification } = useNotification()
 
-    const { data: sales, isLoading, error } = useQuery('sales', getSales);
-
-
+    const { data: reportByWeek } = useQuery('produ', getReportByWeek)
+    const { data: sales, isLoading, error } = useQuery('sales', getSales)
+    const { data: report } = useQuery('ceoreorie', getAllReport)
 
 
     const { mutate: createSaleMutation } = useMutation(createSale, {
@@ -56,6 +56,8 @@ export const SalesProvider = ({ children }: any) => {
     const value = {
         sales,
         isLoading,
+        reportByWeek,
+        report,
         error,
         createSaleMutation,
         updateSaleMutation,
