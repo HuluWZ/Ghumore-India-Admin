@@ -18,6 +18,7 @@ import axios from "axios";
 import { Select,InputLabel } from '@material-ui/core';
 import FormControl from '@mui/material/FormControl';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import { min } from 'moment';
 
 const durationTypeList = ["days","hours","months","years"]
 const api = import.meta.env.VITE_API_URL;
@@ -89,52 +90,19 @@ const FormDialog = ({
 }: FormDialogProps) => {
     const initialValues = {
         id: selectedCategory?.id || "",
-        name: selectedCategory ? selectedCategory.name : "",
-        description: selectedCategory ? selectedCategory.description : "",
-        overview: selectedCategory ? selectedCategory.overview : "",
-        price: selectedCategory ? selectedCategory.price : "",
-        totalCapacity: selectedCategory ? selectedCategory.totalCapacity : "",
-        duration: selectedCategory ? selectedCategory.duration : "",
-        durationType: selectedCategory ? selectedCategory.durationType : "",
-        rating: selectedCategory ? selectedCategory.rating : 4.6,
-        location: selectedCategory ? selectedCategory.location : "",
-        category: selectedCategory ? selectedCategory.category : "",
-        organizer: selectedCategory ? selectedCategory.organizer : "",
-        startDate: selectedCategory ? selectedCategory.startDate : '',
-        endDate: selectedCategory ? selectedCategory.endDate : '',
-        lastBookingDate: selectedCategory ? selectedCategory.lastBookingDate : "",
-        images: selectedCategory ? selectedCategory.images : '',
-        options: selectedCategory ? selectedCategory.options : [{ name: '', description: '', unitPrice: '', time: [''] }],
+        activity: selectedCategory ? selectedCategory.activity : "",
+        message: selectedCategory ? selectedCategory.message : "",
+        rating: selectedCategory ? selectedCategory.rating : "",
     };
     const [formData, setFormData] = useState({
-        name:  "",
-        description: "",
-        overview: "",
-        price: "",
-        totalCapacity:  "",
-        duration:  "",
-        durationType:  "",
-        rating:  '',
-        location:  "",
-        category: "",
-        organizer:   "",
-        startDate:  '',
-        endDate:  '',
-        lastBookingDate: "",
-        images: '',
-        options: ''
+        activity:  "",
+        message: "",
+        rating: "",
   })
 
     const validationSchema = Yup.object({
-        name: Yup.string().required("Required"),
-        price: Yup.string().required("Required"),
-        totalCapacity: Yup.string().required("Required"),
-        duration: Yup.string().required("Required"),
-        organizer: Yup.string().required("Required"),
-        startDate: Yup.date().required("Required"),
-        endDate: Yup.date().required("Required"),
-        lastBookingDate: Yup.date().required("Required"),
-        // images: Yup.mixed().required("Required"),
+        rating: Yup.number().required("Required").min(1,"Rating can be minimum of 1").max(5,"Rating can  be maximum of 5"),
+        message: Yup.string().required("Required"),
     });
     const [locations, setLocations] = useState([{ _id: '', name: '' }]);
     const [categories, setCategories] = useState([{ _id: '', name: '' }]);
@@ -150,10 +118,10 @@ const FormDialog = ({
     
     useEffect(() => {
         async function fetchCategorys() {
-            const response = await fetch(`${api}category/get`);
+            const response = await fetch(`${api}activity/get`);
             const data = await response.json();
-            console.log(" Get All Category ", data?.category)
-            setCategories(data?.category);
+            console.log(" Get All Activity ", data?.activity)
+            setCategories(data?.activity);
         }
         fetchCategorys();
     }, []);
@@ -164,6 +132,7 @@ const FormDialog = ({
 
     const [location, setLocation] = useState('')
     const [category, setCategory] = useState('')
+    const [activity, setActivity] = useState('')
 
     // const [images, setImages] = useState<File[]>([]);
     // Drop Zone TODO
@@ -180,6 +149,9 @@ const FormDialog = ({
   
     const handleCategoryChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
         setCategory(event.target.value as string);
+    }
+    const handleActivityChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
+        setActivity(event.target.value as string);
     }
      const handleDescChange = (event: React.ChangeEvent<{ value?: string | unknown}>) => {
         setDescription(event.target.value as string);
@@ -220,7 +192,7 @@ const FormDialog = ({
         >
             <DialogTitle id="form-dialog-title" sx={{
             }}>
-                {selectedCategory ? "Edit Activity" : "Add Activity"}
+                {selectedCategory ? "Edit Feedback" : "Add Feedback"}
             </DialogTitle>
             <DialogContent sx={{ marginTop: "2rem" }}>
                 <Formik
@@ -229,22 +201,16 @@ const FormDialog = ({
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         console.log(" Selected Category ", selectedCategory);
                         if (selectedCategory) {
-                            console.log(" Trial : ",category,location, selectedImages,content,options,durationType)
-                            console.log(" Submitted Values ",values)
+                            if (activity) {
+                                values.activity = activity
+                            }
                             handleEdit(values);
                             setSelectedCategory(null);
                         } else {
-                            values.location = location;
-                            values.category = category;
-                            values.images = selectedImages;
-                            values.overview = content;
-                            values.options = options;
-                            values.durationType = durationType
-                            // const data = formatData(values);
-                            console.log(" Value Added : ",values)
+                            values.activity = activity;
+                            console.log(" Value Added : ", values)
+                            setActivity('')
                             handleAdd(values);
-                            setSelectedImages([])
-                            setContent('')
                         }
                         resetForm();
                         setSubmitting(false);
@@ -261,269 +227,52 @@ const FormDialog = ({
                         isSubmitting,
                     }: any) => (
                         <form onSubmit={handleSubmit}>
-                            <TextField
-                                autoFocus
-                                id="name"
-                                label="Name"
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                                value={values.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.name && errors.name)}
-                                helperText={touched.name && errors.name}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
+
+                    <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
+        <InputLabel> Select Activity</InputLabel>
+        <Select value={activity}  onChange={handleActivityChange} label="Select Activity" required>
+          {categories?.map((cat) => (
+            <MenuItem key={cat?._id} value={cat?._id}>{cat?.name}</MenuItem>
+          ))}
+        </Select>
+                            </FormControl>   
+
                              <TextField
                                 autoFocus
-                                id="description"
-                                label="Description"
+                                id="message"
+                                label="Message"
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                value={values.description}
+                                value={values.message}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(touched.description && errors.description)}
-                                helperText={touched.description && errors.description}
+                                error={Boolean(touched.message && errors.message)}
+                                helperText={touched.message && errors.message}
                                 sx={{
                                     marginBottom:2
                                 }}
                             />
                         
                             <br></br>
-                            <h4>Overview</h4>
-                            {selectedCategory ?
-                                (<ReactQuill theme="snow" id="content" value={values?.overview} onChange={handleChange} modules={modules} formats={formats} />) :
-                                (<ReactQuill theme="snow" id="content" value={content} onChange={handleEditorChange} modules={modules} formats={formats} />
-)}
-                            <br></br>
-                            
-
-        <FormControl   sx={{ m: 1, minWidth: 200 }} margin='normal'>
-                    
-          <InputLabel> Select Location </InputLabel>
-       
-        <Select value={location} onChange={handleLocationChange} label="Select Location">
-           {locations.map((location) => (
-            <MenuItem key={location._id} value={location._id}>{location.name}</MenuItem>
-           ))}
-        </Select>
-                                    
-
-        </FormControl>
-
- <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
-        <InputLabel> Select Category</InputLabel>
-        <Select value={category}  onChange={handleCategoryChange} label="Select Category">
-          {categories?.map((cat) => (
-            <MenuItem key={cat?._id} value={cat?._id}>{cat?.name}</MenuItem>
-          ))}
-        </Select>
-                            </FormControl>   
+                        
                             <br></br>
                             <TextField
                                 autoFocus
-                                id="price"
-                                label="Price"
+                                id="rating"
+                                label="Rating"
                                 type="number"
                                 variant="standard"
-                                value={values.price}
+                                value={values.rating}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(touched.price && errors.price)}
-                                helperText={touched.price && errors.price}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
-                            <TextField
-                                autoFocus
-                                id="duration"
-                                label="Duration"
-                                type="number"
-                                variant="standard"
-                                value={values.duration}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.duration && errors.duration)}
-                                helperText={touched.duration && errors.duration}
+                                error={Boolean(touched.rating && errors.rating)}
+                                helperText={touched.rating && errors.rating}
                                 sx={{
                                     marginBottom:2
                                 }}
                             />
                            
-                            <TextField
-                                autoFocus
-                                id="outlined-select-currency"
-                                label="DurationType"
-                                name="durationType"
-                                select
-                                variant="standard"
-                                value={durationType}
-                                defaultValue="days"
-                                onChange={handleDurationTypeChange}
-                                // onBlur={handleBlur}
-                                error={Boolean(touched.durationType && errors.durationType)}
-                                helperText={touched.durationType && errors.durationType}
-                                sx={{
-                                    marginBottom:2
-                                }}>
-                                {durationTypeList.map((option) => (
-                                    <MenuItem  key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                                </TextField>
-                            
-
-        {options.map((option, index) => (
-        <div key={index} >
-            <TextField
-            id="name-"
-            label="Name"
-            name="name"
-            type="text"
-                    value={option.name}
-                    variant="standard"
-                    required={true}
-            onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-          />
-          <TextField
-          id="description"
-            label="Description"
-            name="description"
-            type="text"
-                    value={option.description}
-                    variant="standard"
-                    required={true}
-            onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-                />
-                <br></br>
-            <TextField
-            id="unitPrice"
-            label="Unit Price"
-            name="unitPrice"
-            type="number"
-                    value={option.unitPrice}
-                    required={true}
-                    variant="standard"
-            onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-                />                                    
-           <TextField
-            id="availableTime"
-            label="Available Time"
-            name="time"
-            type="time"
-            value={option.time}
-                    required={true}
-                    variant="standard"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
-                    InputProps={{
-          inputProps: {
-            multiple: true,
-          },
-        }}
-         />
-        <br></br>
-        </div>
-      ))}
-
-    <br></br>
-      <Button variant="contained" color="primary" onClick={handleAddOption}>
-        Add Option
-     </Button>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                autoFocus
-                                id="totalCapacity"
-                                label="TotalCapacity"
-                                type="number"
-                                variant="standard"
-                                value={values.totalCapacity}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.totalCapacity && errors.totalCapacity)}
-                                helperText={touched.totalCapacity && errors.totalCapacity}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
-                              <TextField
-                                autoFocus
-                                id="organizer"
-                                label="Organizer"
-                                type="text"
-                                variant="standard"
-                                value={values.organizer}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(touched.organizer && errors.organizer)}
-                                helperText={touched.organizer && errors.organizer}
-                                sx={{
-                                    marginBottom:2
-                                }}
-                            />
-              
-              <br></br>
-                    
-        <TextField
-            id="startDate"
-            label="Start Date"
-            type="date"
-            value={values.startDate}
-            required={true}
-            // variant="outlined"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={Boolean(touched.startDate && errors.startDate)}
-            helperText={touched.startDate && errors.startDate}
-            sx={{
-                    marginBottom:2
-                }}
-        />
-                                
-
-        <TextField
-            id="endDate"
-            label="End Date"
-            type="date"
-            value={values.endDate}
-           required={true}
-                                // variant="filled"
-                                onChange={handleChange}
-                                 onBlur={handleBlur}
-                                error={Boolean(touched.endDate && errors.endDate)}
-                                helperText={touched.endDate && errors.endDate}
-                                sx={{
-                                    marginBottom:2
-                                }}
-         /><TextField
-            id="lastBookingDate"
-            label="Last Booking Date"
-            type="date"
-            value={values.lastBookingDate}
-            required={true}
-            // variant="standard"
-            onChange={handleChange}
-         />
-            <Button variant="contained" component="label">  Upload Images
-             <Input type="file" style={{ display: 'none' }}      // Change to true if you want to allow multiple files
-               inputProps={{ multiple: true,required:true }} onChange={handleFileSelect}   />
-            </Button>
-        <div >
-      <div>
-        {selectedImages?.map((file) => (
-        <img key={file?.name} src={URL.createObjectURL(file)} alt={file?.name} width="200" />
-      ))}
-      </div>
-      
-    </div>
-                            
                             <br></br>
                             <DialogActions>
                                 <ButtonGroup>
