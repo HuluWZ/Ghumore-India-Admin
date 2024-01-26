@@ -47,7 +47,8 @@ const FormDialog = (props: FormDialogProps) => {
         SetParent(event.target.value as string);
     }
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
+        const file = event.target.files ? event.target.files[0] : null;
+        console.log(" File Select ",file,event.target.files)
         SetFile(file)
     }
 
@@ -71,7 +72,7 @@ const FormDialog = (props: FormDialogProps) => {
                         } else {
                             values.image = file
                             parent ?? values.parent;
-                            console.log(" Submited Values ",values)
+                            console.log(" Submited Values ",file,values)
                             handleAdd(values);
                             SetFile(null)
                         }
