@@ -106,7 +106,7 @@ export const mainListItems = (
 export const secondaryListItems = (
     <React.Fragment>
         <ListSubheader inset sx={{ fontFamily: 'Montserrat' }}>
-            Reports
+            {/* Reports */}
         </ListSubheader>
         <List sx={{
             [`& .active, & .${listItemClasses.root}:hover`]: {
@@ -115,13 +115,13 @@ export const secondaryListItems = (
                 },
             },
         }}>
-            {listReportItems.map((item, index) => (
+            {/* {listReportItems.map((item, index) => (
                 <ListItemButton key={index} component={NavLink} to={item.path}>
                     <ListItemIcon sx={{ color: item.color }}>
                         {item.icon}
                     </ListItemIcon>
                     <ListItemText primary={item.name.toUpperCase()} />
-                </ListItemButton>))}
+                </ListItemButton>))} */}
         </List>
     </React.Fragment>
 );
