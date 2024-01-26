@@ -94,12 +94,13 @@ export const getAllReport = async () => {
 
 export const getReportByWeek = async () => {
     try {
-        const response = await axios.get(`${url}/week`, {
+                console.log(" Weekly Report  Before",`${api}booking/week/`)
+        const response = await axios.get(`${api}booking/week/`, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
             },
         });
+        console.log(" Weekly Report ",response.data)
         return response.data;
     } catch (error) {
         console.error(error)
