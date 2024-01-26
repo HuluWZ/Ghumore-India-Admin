@@ -205,7 +205,8 @@ const FormDialog = ({
     }
 
  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+     const files = event.target.files;
+     console.log(" Images ",files)
     if (files) {
       const selectedFilesArray = Array.from(files);
       setSelectedImages(selectedFilesArray);
@@ -222,7 +223,7 @@ const FormDialog = ({
             }}>
                 {selectedCategory ? "Edit Activity" : "Add Activity"}
             </DialogTitle>
-            <DialogContent sx={{ marginTop: "2rem" }}>
+            <DialogContent sx={{ marginTop: "1rem" }}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
@@ -337,7 +338,7 @@ const FormDialog = ({
                                 error={Boolean(touched.price && errors.price)}
                                 helperText={touched.price && errors.price}
                                 sx={{
-                                    marginBottom:2
+                                    marginBottom:1
                                 }}
                             />
                             <TextField
@@ -352,7 +353,7 @@ const FormDialog = ({
                                 error={Boolean(touched.duration && errors.duration)}
                                 helperText={touched.duration && errors.duration}
                                 sx={{
-                                    marginBottom:2
+                                    marginBottom:1
                                 }}
                             />
                            
@@ -370,7 +371,7 @@ const FormDialog = ({
                                 error={Boolean(touched.durationType && errors.durationType)}
                                 helperText={touched.durationType && errors.durationType}
                                 sx={{
-                                    marginBottom:2
+                                    marginBottom:1
                                 }}>
                                 {durationTypeList.map((option) => (
                                     <MenuItem  key={option} value={option}>
@@ -390,7 +391,11 @@ const FormDialog = ({
                     value={option.name}
                     variant="standard"
                     required={true}
-            onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
+                                                    sx={{
+                                    marginBottom:2
+                                }}
+
           />
           <TextField
           id="description"
@@ -400,6 +405,10 @@ const FormDialog = ({
                     value={option.description}
                     variant="standard"
                     required={true}
+                                                    sx={{
+                                    marginBottom:2
+                                }}
+
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
                 />
                 <br></br>
@@ -411,6 +420,10 @@ const FormDialog = ({
                     value={option.unitPrice}
                     required={true}
                     variant="standard"
+                                                    sx={{
+                                    marginBottom:2
+                                }}
+
             onChange={(event:React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
                 />                                    
            <TextField
@@ -422,6 +435,10 @@ const FormDialog = ({
                     required={true}
                     variant="standard"
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(event, index)}
+                                                    sx={{
+                                    marginBottom:2
+                                }}
+
                     InputProps={{
           inputProps: {
             multiple: true,
@@ -475,6 +492,7 @@ const FormDialog = ({
             id="startDate"
             label="Start Date"
             type="date"
+                                            variant="standard"
             value={values.startDate}
             required={true}
             // variant="outlined"
@@ -492,7 +510,9 @@ const FormDialog = ({
             id="endDate"
             label="End Date"
             type="date"
-            value={values.endDate}
+                                value={values.endDate}
+                                                                            variant="standard"
+
            required={true}
                                 // variant="filled"
                                 onChange={handleChange}
@@ -500,17 +520,27 @@ const FormDialog = ({
                                 error={Boolean(touched.endDate && errors.endDate)}
                                 helperText={touched.endDate && errors.endDate}
                                 sx={{
-                                    marginBottom:2
+                                    marginBottom: 2,
+                                    marginRight:2
                                 }}
-         /><TextField
+            />
+                            <br></br>
+                                
+         <TextField
             id="lastBookingDate"
             label="Last Booking Date"
-            type="date"
+                                type="date"
+                                                                            variant="standard"
+
             value={values.lastBookingDate}
             required={true}
-            // variant="standard"
-            onChange={handleChange}
-         />
+                                onChange={handleChange}
+                                sx={{
+                                    marginBottom: 2
+                                    
+                                }}
+                            />
+                            <br />
             <Button variant="contained" component="label">  Upload Images
              <Input type="file" style={{ display: 'none' }}      // Change to true if you want to allow multiple files
                inputProps={{ multiple: true,required:true }} onChange={handleFileSelect}   />

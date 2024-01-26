@@ -21,8 +21,17 @@ export const getCustomers = async () => {
 
 //create category
 export const createCustomer = async (data: any) => {
+    const formData = new FormData();
+    console.log(" Data  ",data.parent)
+    formData.append("name", data.name)
+    formData.append("image", data.image)
+    formData.append("link", data.link)
+    if (data.parent.length > 4) {
+        formData.append("parent",data.parent)
+    }
+
     console.log(" Add Location : ", data,api)
-    const response = await axios.post(`${api}create`, data, {
+    const response = await axios.post(`${api}create/`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
