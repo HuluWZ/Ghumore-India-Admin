@@ -27,7 +27,7 @@ const Categories = () => {
   const { mutate: createReviewMutation } = useMutation(createCategory, {
       onSuccess: () => {
           queryClient.invalidateQueries('categories');
-          showNotification('Activity created successfully', 'success')
+          showNotification('Feedback created successfully', 'success')
       },
 
       onError: (error: any) => {
@@ -40,7 +40,7 @@ const Categories = () => {
       useMutation((data: any) => updateCategory(data.id, data), {
           onSuccess: () => {
               queryClient.invalidateQueries('categories');
-              showNotification('Activity updated successfully', 'success')
+              showNotification('Feedback updated successfully', 'success')
           },
 
           onError: (error: any) => {
@@ -52,7 +52,7 @@ const Categories = () => {
   const { mutate: deleteReviewMutation } = useMutation(deleteCategory, {
       onSuccess: () => {
           queryClient.invalidateQueries('categories');
-          showNotification('Activity deleted successfully', 'success')
+          showNotification('Feedback deleted successfully', 'success')
       },
 
       onError: (error: any) => {
