@@ -332,7 +332,7 @@ const FormDialog = ({
                     
           <InputLabel> Select Location </InputLabel>
        
-        <Select value={location} onChange={handleLocationChange} label="Select Location">
+        <Select value={location} onChange={handleLocationChange} label="Select Location" required>
            {locations.map((location) => (
             <MenuItem key={location._id} value={location._id}>{location.name}</MenuItem>
            ))}
@@ -343,7 +343,7 @@ const FormDialog = ({
 
  <FormControl margin='normal'  sx={{ m: 1, minWidth: 200 }}>
         <InputLabel> Select Category</InputLabel>
-        <Select value={category}  onChange={handleCategoryChange} label="Select Category">
+        <Select value={category}  onChange={handleCategoryChange} label="Select Category" required>
           {categories?.map((cat) => (
             <MenuItem key={cat?._id} value={cat?._id}>{cat?.name}</MenuItem>
           ))}
